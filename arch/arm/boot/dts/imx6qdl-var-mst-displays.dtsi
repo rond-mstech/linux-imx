@@ -1,0 +1,120 @@
+/*
+ * Copyright (C) 2015-2017 Variscite Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * Capacitive Display for VAR-SoloCustomBoard and VAR-DT6CustomBoard
+ */
+
+&i2c3 {
+
+
+/*
+	ctw6120_tsc@38 {
+		compatible = "edt,edt-ft5206"; //ft6236
+		reg = <0x38>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <7 0>;
+		touchscreen-size-x = <320>;
+		touchscreen-size-y = <480>;
+	};
+*/
+	touch: focaltech@38 {
+		compatible = "focaltech,fts";
+		reg = <0x38>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <7 0>;
+		focaltech,panel-type = <FT6336G>;
+		focaltech,reset-gpio = <&gpio5 17 0>;
+		focaltech,irq-gpio = <&gpio3 7 0>;
+		focaltech,max-touch-number = <5>;
+		focaltech,display-coords =  <0 0 350 480>;
+
+		focaltech,have-key;
+		focaltech,key-number = <3>;
+		focaltech,keys = <139 102 158>;
+		focaltech,key-y-coord = <2000>;
+		focaltech,key-x-coords = <200 600 800>;
+	};
+
+};
+
+    &mipi_dsi {
+	compatible = "fsl,imx6q-mipi-dsi";
+	dev_id = <0>;
+	disp_id = <1>;
+	lcd_panel = "TRULY-WVGA";
+//	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
+//	reset-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
+	reset-delay-us = <50>;
+	status = "okay";
+    };
+
+    &mxcfb1{
+        compatible = "fsl,imx6q-mipi-dsi";
+        disp_dev = "mipi_dsi";
+        interface_pix_fmt = "RGB24";
+        lcd_panel = "TRULY-WVGA";
+        mode_str ="TRULY-WVGA";
+        default_bpp = <24>;
+        int_clk = <0>;
+        lete_init = <0>;
+        status = "okay";
+    };
+
+
+/*
+&ldb {
+	status = "okay";
+
+	lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <8>;
+		status = "okay";
+
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: hsd100pxn1 {
+				clock-frequency = <35714000>;
+				hactive = <320>;
+				vactive = <480>;
+				hback-porch = <20>;
+				hfront-porch = <8>;
+				vback-porch = <10>;
+				vfront-porch = <8>;
+				hsync-len = <10>;
+				vsync-len = <8>;
+			};
+		};
+	};
+
+	lvds-channel@1 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <18>;
+		primary;
+		status = "okay";
+
+		display-timings {
+			native-mode = <&timing1>;
+			timing1: hsd100pxn1 {
+				clock-frequency = <32000000>;
+				hactive = <800>;
+				vactive = <480>;
+				hback-porch = <39>;
+				hfront-porch = <39>;
+				vback-porch = <29>;
+				vfront-porch = <13>;
+				hsync-len = <47>;
+				vsync-len = <2>;
+			};
+		};
+	};
+};
+
+&mxcfb1 {
+	interface_pix_fmt = "RGB666";
+};
+
+*/

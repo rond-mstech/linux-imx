@@ -739,8 +739,6 @@ static int device_reset(struct device *dev)
 	s32 delay_us;
 	int ret;
 
-	return 0;
-
 	gpio = of_get_named_gpio_flags(np, "reset-gpios", 0, &flags);
 	if (gpio == -EPROBE_DEFER) {
 		return gpio;
@@ -856,7 +854,6 @@ static int mipi_dsi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-/*
 	ret = of_property_read_u32(np, "dev_id", &dev_id);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to read of property dev_id\n");
@@ -867,9 +864,6 @@ static int mipi_dsi_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "failed to read of property disp_id\n");
 		return ret;
 	}
-*/
-	mipi_dsi->dev_id = dev_id = 0;
-	mipi_dsi->disp_id = disp_id = 1;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!res) {

@@ -147,6 +147,7 @@
 		status = "disabled";
 	};
 
+#ifndef MST_BACKLIGHT
 	backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm2 0 50000>;
@@ -154,6 +155,15 @@
 		default-brightness-level = <7>;
 		status = "okay";
 	};
+#else
+	backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm2 0 800>;
+		brightness-levels = <0 36 72 108 142  184 230 255>;
+		default-brightness-level = <7>;
+		status = "okay";
+	};
+#endif
 
 	v4l2_cap_0 {
 		compatible = "fsl,imx6q-v4l2-capture";

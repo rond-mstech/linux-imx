@@ -8,19 +8,31 @@
  * Capacitive Display for VAR-SoloCustomBoard and VAR-DT6CustomBoard
  */
 
+&mipi_dsi {
+	compatible = "fsl,imx6q-mipi-dsi";
+	reg = <0x021e0000 0x4000>;
+	dev_id = <0x0>;
+	disp_id = <0x1>;
+	lcd_panel = "TRULY-WVGA";
+//	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
+	reset-gpios = <&gpio5 12 GPIO_ACTIVE_LOW>;
+	reset-delay-us = <50000>;
+	status = "okay";
+};
+
+&mxcfb1 {
+	compatible = "fsl,mxc_sdc_fb";
+    disp_dev = "mipi_dsi";
+    interface_pix_fmt = "RGB24";
+    mode_str ="TRULY-WVGA";
+    default_bpp = <24>;
+    int_clk = <0>;
+    lete_init = <0>;
+    status = "okay";
+};
+
 &i2c3 {
 
-
-/*
-	ctw6120_tsc@38 {
-		compatible = "edt,edt-ft5206"; //ft6236
-		reg = <0x38>;
-		interrupt-parent = <&gpio3>;
-		interrupts = <7 0>;
-		touchscreen-size-x = <320>;
-		touchscreen-size-y = <480>;
-	};
-*/
 	touch: focaltech@38 {
 		compatible = "focaltech,fts";
 		reg = <0x38>;
@@ -41,64 +53,19 @@
 
 };
 
-    &mipi_dsi {
-	compatible = "fsl,imx6q-mipi-dsi";
-	dev_id = <0>;
-	disp_id = <1>;
-	lcd_panel = "TRULY-WVGA";
-//	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
-//	reset-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
-	reset-delay-us = <50>;
-	status = "okay";
-    };
-
-    &mxcfb1{
-        compatible = "fsl,imx6q-mipi-dsi";
-        disp_dev = "mipi_dsi";
-        interface_pix_fmt = "RGB24";
-        lcd_panel = "TRULY-WVGA";
-        mode_str ="TRULY-WVGA";
-        default_bpp = <24>;
-        int_clk = <0>;
-        lete_init = <0>;
-        status = "okay";
-    };
-
-
 /*
 &ldb {
 	status = "okay";
 
 	lvds-channel@0 {
 		fsl,data-mapping = "spwg";
-		fsl,data-width = <8>;
+		fsl,data-width = <24>;
 		status = "okay";
-
-		display-timings {
-			native-mode = <&timing0>;
-			timing0: hsd100pxn1 {
-				clock-frequency = <35714000>;
-				hactive = <320>;
-				vactive = <480>;
-				hback-porch = <20>;
-				hfront-porch = <8>;
-				vback-porch = <10>;
-				vfront-porch = <8>;
-				hsync-len = <10>;
-				vsync-len = <8>;
-			};
-		};
-	};
-
-	lvds-channel@1 {
-		fsl,data-mapping = "spwg";
-		fsl,data-width = <18>;
 		primary;
-		status = "okay";
 
 		display-timings {
-			native-mode = <&timing1>;
-			timing1: hsd100pxn1 {
+			native-mode = <&timing0c>;
+			timing0c: hsd100pxn1 {
 				clock-frequency = <32000000>;
 				hactive = <800>;
 				vactive = <480>;
@@ -111,10 +78,26 @@
 			};
 		};
 	};
-};
 
-&mxcfb1 {
-	interface_pix_fmt = "RGB666";
-};
+	lvds-channel@1 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
 
+		display-timings {
+			native-mode = <&timing1>;
+			timing1: hsd100pxn1 {
+				clock-frequency = <38251000>;
+				hactive = <800>;
+				vactive = <600>;
+				hback-porch = <112>;
+				hfront-porch = <32>;
+				vback-porch = <3>;
+				vfront-porch = <17>;
+				hsync-len = <80>;
+				vsync-len = <4>;
+			};
+		};
+	};
+};
 */

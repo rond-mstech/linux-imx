@@ -865,6 +865,9 @@ static int mipi_dsi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+	mipi_dsi->dev_id  = dev_id;
+	mipi_dsi->disp_id = disp_id;
+
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!res) {
 		dev_err(&pdev->dev, "failed to get platform resource 0\n");

@@ -17,8 +17,10 @@
 #include <linux/regmap.h>
 #include "mxc_dispdrv.h"
 
+#define DEBUG 1
+
 #ifdef DEBUG
-#define mipi_dbg(fmt, ...) printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
+#define mipi_dbg(fmt, ...) printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
 #else
 #define mipi_dbg(fmt, ...)
 #endif
@@ -122,6 +124,11 @@ struct mipi_dsi_info {
 void mipid_hx8369_get_lcd_videomode(struct fb_videomode **mode, int *size,
 		struct mipi_lcd_config **data);
 int mipid_hx8369_lcd_setup(struct mipi_dsi_info *);
+#endif
+#ifdef CONFIG_FB_MXC_MIPI_DSI_KD035HVTIA067
+void mipid_kd035hvtia067_get_lcd_videomode(struct fb_videomode **mode, int *size,
+		struct mipi_lcd_config **data);
+int mipid_kd035hvtia067_lcd_setup(struct mipi_dsi_info *);
 #endif
 #ifdef CONFIG_FB_MXC_TRULY_PANEL_TFT3P5079E
 void mipid_otm8018b_get_lcd_videomode(struct fb_videomode **mode, int *size,

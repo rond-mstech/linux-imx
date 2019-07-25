@@ -13,7 +13,7 @@
 	reg = <0x021e0000 0x4000>;
 	dev_id = <0x0>;
 	disp_id = <0x1>;
-	lcd_panel = "TRULY-WVGA";
+	lcd_panel = "KD035HVTIA067";
 //	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
 	reset-gpios = <&gpio5 12 GPIO_ACTIVE_LOW>;
 	reset-delay-us = <50000>;
@@ -24,11 +24,15 @@
 	compatible = "fsl,mxc_sdc_fb";
     disp_dev = "mipi_dsi";
     interface_pix_fmt = "RGB24";
-    mode_str ="TRULY-WVGA";
+    mode_str ="KD035HVTIA067";
     default_bpp = <24>;
     int_clk = <0>;
     lete_init = <0>;
     status = "okay";
+};
+
+&mipi_csi {
+	status = "disabled";
 };
 
 &i2c3 {

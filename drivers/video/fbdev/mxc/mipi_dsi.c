@@ -57,6 +57,12 @@ static struct mipi_dsi_match_lcd mipi_dsi_lcd_db[] = {
 	 {mipid_hx8369_get_lcd_videomode, mipid_hx8369_lcd_setup}
 	},
 #endif
+#ifdef CONFIG_FB_MXC_MIPI_DSI_KD035HVTIA067
+	{
+	 "KD035HVTIA067",
+	 {mipid_kd035hvtia067_get_lcd_videomode, mipid_kd035hvtia067_lcd_setup}
+	},
+#endif
 	{
 	"", {NULL, NULL}
 	}

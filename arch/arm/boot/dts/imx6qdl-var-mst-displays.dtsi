@@ -23,9 +23,9 @@
 &mxcfb1 {
 	compatible = "fsl,mxc_sdc_fb";
     disp_dev = "mipi_dsi";
-    interface_pix_fmt = "RGB24";
+    interface_pix_fmt = "RGB666";
     mode_str ="KD035HVTIA067";
-    default_bpp = <24>;
+    default_bpp = <18>;
     int_clk = <0>;
     lete_init = <0>;
     status = "okay";

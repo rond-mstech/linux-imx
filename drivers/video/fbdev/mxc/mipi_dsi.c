@@ -227,8 +227,10 @@ static int mipi_dsi_pkt_read(struct mipi_dsi_info *mipi_dsi,
 			 DSI_CMD_PKT_STATUS_GEN_RD_CMD_BUSY) {
 		msleep(1);
 		timeout++;
-		if (timeout == MIPI_DSI_REG_RW_TIMEOUT)
+		if (timeout == MIPI_DSI_REG_RW_TIMEOUT){
+			dev_err(&mipi_dsi->pdev->dev, "%s, cmd to sent out timeout!.\n", __func__);
 			return -EIO;
+		}
 		mipi_dsi_read_register(mipi_dsi, MIPI_DSI_CMD_PKT_STATUS,
 			&val);
 	}
@@ -237,8 +239,10 @@ static int mipi_dsi_pkt_read(struct mipi_dsi_info *mipi_dsi,
 			 DSI_CMD_PKT_STATUS_GEN_RD_CMD_BUSY) {
 		msleep(1);
 		timeout++;
-		if (timeout == MIPI_DSI_REG_RW_TIMEOUT)
+		if (timeout == MIPI_DSI_REG_RW_TIMEOUT){
+			dev_err(&mipi_dsi->pdev->dev, "%s, response stroed in FIFO timeout!.\n", __func__);
 			return -EIO;
+		}
 		mipi_dsi_read_register(mipi_dsi, MIPI_DSI_CMD_PKT_STATUS,
 			&val);
 	}

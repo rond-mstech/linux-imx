@@ -140,6 +140,7 @@ struct mxcfb_tile_block {
 static const struct mxcfb_pfmt mxcfb_pfmts[] = {
 	/*     pixel         bpp    red         green        blue      transp */
 	{IPU_PIX_FMT_RGB565,   16, {11, 5, 0}, { 5, 6, 0}, { 0, 5, 0}, {  0, 0, 0} },
+	{IPU_PIX_FMT_RGB666,   18, {12, 6, 0}, { 6, 6, 0}, { 0, 6, 0}, {  0, 0, 0} },
 	{IPU_PIX_FMT_BGRA4444, 16, { 8, 4, 0}, { 4, 4, 0}, { 0, 4, 0}, { 12, 4, 0} },
 	{IPU_PIX_FMT_BGRA5551, 16, {10, 5, 0}, { 5, 5, 0}, { 0, 5, 0}, { 15, 1, 0} },
 	{IPU_PIX_FMT_RGB24,  24, { 0, 8, 0}, { 8, 8, 0}, {16, 8, 0}, { 0, 0, 0} },
@@ -230,6 +231,9 @@ static uint32_t bpp_to_pixfmt(int bpp)
 	case 16:
 		pixfmt = IPU_PIX_FMT_RGB565;
 		break;
+	case 18:
+		pixfmt = IPU_PIX_FMT_RGB666;
+		break;
 	}
 	return pixfmt;
 }
@@ -309,6 +313,7 @@ static uint32_t fb_to_store_pixfmt(uint32_t fb_pixfmt)
 	case IPU_PIX_FMT_RGB24:
 	case IPU_PIX_FMT_BGR24:
 	case IPU_PIX_FMT_RGB565:
+	case IPU_PIX_FMT_RGB666:
 	case IPU_PIX_FMT_BGRA4444:
 	case IPU_PIX_FMT_BGRA5551:
 	case IPU_PIX_FMT_UYVY:
@@ -3025,7 +3030,7 @@ static int mxcfb_dispdrv_init(struct platform_device *pdev,
 		if (ret)
 			return ret;
 
-		dev_dbg(&pdev->dev, "di_pixfmt:0x%x, bpp:0x%x, di:%d, ipu:%d\n",
+		dev_info(&pdev->dev, "di_pixfmt:0x%x, bpp:0x%x, di:%d, ipu:%d\n",
 				setting.if_fmt, setting.default_bpp,
 				mxcfbi->ipu_di, mxcfbi->ipu_id);
 	}
@@ -3100,6 +3105,8 @@ static int mxcfb_option_setup(struct platform_device *pdev, struct fb_info *fbi)
 				fb_pix_fmt = IPU_PIX_FMT_ABGR32;
 			else if (!strncmp(opt+6, "RGB565", 6))
 				fb_pix_fmt = IPU_PIX_FMT_RGB565;
+			else if (!strncmp(opt+6, "RGB666", 6))
+				fb_pix_fmt = IPU_PIX_FMT_RGB666;
 			else if (!strncmp(opt+6, "BGRA4444", 8))
 				fb_pix_fmt = IPU_PIX_FMT_BGRA4444;
 			else if (!strncmp(opt+6, "BGRA5551", 8))
@@ -3410,6 +3417,8 @@ static int mxcfb_get_of_property(struct platform_device *pdev,
 		plat_data->interface_pix_fmt = IPU_PIX_FMT_RGB565;
 	else if (!strncmp(pixfmt, "RGB666", 6))
 		plat_data->interface_pix_fmt = IPU_PIX_FMT_RGB666;
+	else if (!strncmp(pixfmt, "BGR666", 6))
+		plat_data->interface_pix_fmt = IPU_PIX_FMT_BGR666;
 	else if (!strncmp(pixfmt, "YUV444", 6))
 		plat_data->interface_pix_fmt = IPU_PIX_FMT_YUV444;
 	else if (!strncmp(pixfmt, "LVDS666", 7))

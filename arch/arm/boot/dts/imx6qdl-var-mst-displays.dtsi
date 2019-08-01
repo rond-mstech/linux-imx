@@ -1,16 +1,17 @@
 /*
- * Copyright (C) 2015-2017 Variscite Ltd.
+ * Copyright (C) 2015-2019 MS Tech.
+ *
+ * Author: Ron Donio. ron.d@ms-technologies.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * Capacitive Display for VAR-SoloCustomBoard and VAR-DT6CustomBoard
+ * Capacitive MIPI DSI Display for MS Tech i.MX6Q board/
  */
 
 &mipi_dsi {
 	compatible = "fsl,imx6q-mipi-dsi";
-	reg = <0x021e0000 0x4000>;
 	dev_id = <0x0>;
 	disp_id = <0x1>;
 	lcd_panel = "KD035HVTIA067";
@@ -23,9 +24,9 @@
 &mxcfb1 {
 	compatible = "fsl,mxc_sdc_fb";
     disp_dev = "mipi_dsi";
-    interface_pix_fmt = "RGB666";
+    interface_pix_fmt = "RGB565";
     mode_str ="KD035HVTIA067";
-    default_bpp = <18>;
+    default_bpp = <16>;
     int_clk = <0>;
     lete_init = <0>;
     status = "okay";
@@ -56,52 +57,3 @@
 	};
 
 };
-
-/*
-&ldb {
-	status = "okay";
-
-	lvds-channel@0 {
-		fsl,data-mapping = "spwg";
-		fsl,data-width = <24>;
-		status = "okay";
-		primary;
-
-		display-timings {
-			native-mode = <&timing0c>;
-			timing0c: hsd100pxn1 {
-				clock-frequency = <32000000>;
-				hactive = <800>;
-				vactive = <480>;
-				hback-porch = <39>;
-				hfront-porch = <39>;
-				vback-porch = <29>;
-				vfront-porch = <13>;
-				hsync-len = <47>;
-				vsync-len = <2>;
-			};
-		};
-	};
-
-	lvds-channel@1 {
-		fsl,data-mapping = "spwg";
-		fsl,data-width = <24>;
-		status = "okay";
-
-		display-timings {
-			native-mode = <&timing1>;
-			timing1: hsd100pxn1 {
-				clock-frequency = <38251000>;
-				hactive = <800>;
-				vactive = <600>;
-				hback-porch = <112>;
-				hfront-porch = <32>;
-				vback-porch = <3>;
-				vfront-porch = <17>;
-				hsync-len = <80>;
-				vsync-len = <4>;
-			};
-		};
-	};
-};
-*/

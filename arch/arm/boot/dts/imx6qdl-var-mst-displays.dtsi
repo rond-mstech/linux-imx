@@ -16,7 +16,7 @@
 	disp_id = <0x1>;
 	lcd_panel = "KD035HVTIA067";
 //	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
-	reset-gpios = <&gpio5 12 GPIO_ACTIVE_LOW>;
+	reset-gpios = <&gpio6 0 GPIO_ACTIVE_LOW>;
 	reset-delay-us = <50000>;
 	status = "okay";
 };
@@ -41,11 +41,11 @@
 	touch: focaltech@38 {
 		compatible = "focaltech,fts";
 		reg = <0x38>;
-		interrupt-parent = <&gpio3>;
-		interrupts = <7 0>;
+		interrupt-parent = <&gpio5>;
+		interrupts = <31 0>;
 		focaltech,panel-type = <FT6336G>;
-		focaltech,reset-gpio = <&gpio5 17 0>;
-		focaltech,irq-gpio = <&gpio3 7 0>;
+		focaltech,reset-gpio = <&gpio6 2 0>;
+		focaltech,irq-gpio = <&gpio5 31 0>;
 		focaltech,max-touch-number = <5>;
 		focaltech,display-coords =  <0 0 350 480>;
 

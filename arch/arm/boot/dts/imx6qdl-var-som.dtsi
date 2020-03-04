@@ -580,7 +580,8 @@
 
 		pinctrl_usbotg_var: usbotggrp-3 {
 			fsl,pins = <
-				MX6QDL_PAD_GPIO_4__GPIO1_IO04 		0x17059
+/*				MX6QDL_PAD_GPIO_4__GPIO1_IO04 		0x17059  Old design bad*/
+				MX6QDL_PAD_GPIO_1__USB_OTG_ID		0x17059
 			>;
 		};
 

@@ -31,6 +31,8 @@
 #include <linux/spinlock.h>
 #include <linux/delay.h>
 #include <video/mipi_display.h>
+#include <linux/unistd.h>
+#include <linux/reboot.h>
 
 #include "mipi_dsi.h"
 
@@ -49,6 +51,8 @@
 #define	MIPI_LCD_SLEEP_MODE_DELAY	(120)
 #define	MIPI_DSI_REG_RW_TIMEOUT		(20)
 #define	MIPI_DSI_PHY_TIMEOUT		(10)
+
+int mipid_esdp = 0;  /* Activate ESD Protection */
 
 static struct mipi_dsi_match_lcd mipi_dsi_lcd_db[] = {
 #ifdef CONFIG_FB_MXC_TRULY_WVGA_SYNC_PANEL
@@ -99,6 +103,22 @@ static const struct _mipi_dsi_phy_pll_clk mipi_dsi_phy_pll_clk_table[] = {
 	{180,  0x24}, /*  160-180MHz	*/
 	{160,  0x04}, /*  150-160MHz	*/
 };
+
+
+struct mxc_dispdrv_setting lcd_local_setting;
+struct mipi_dsi_info mipi_dsi_local;
+
+EXPORT_SYMBOL_GPL(lcd_local_setting);
+EXPORT_SYMBOL_GPL(mipi_dsi_local);
+EXPORT_SYMBOL_GPL(mipid_esdp);
+
+
+static struct platform_device pdev_local;
+int mipid_kd035hvtia067_lcd_get_model(struct mipi_dsi_info *mipi_dsi);
+
+int mipi_dsi_lcd_init(struct mipi_dsi_info *mipi_dsi,
+	struct mxc_dispdrv_setting *setting);
+
 
 static int valid_mode(int pixel_fmt)
 {
@@ -450,6 +470,24 @@ static void mipi_dsi_disable_controller(struct mipi_dsi_info *mipi_dsi)
 	mipi_dsi_write_register(mipi_dsi, MIPI_DSI_PHY_RSTZ, DSI_PHY_RSTZ_RST);
 }
 
+static int reset_required = 0;
+void set_reset_required(void)
+{
+	reset_required = 1;
+}
+
+void reset_reset_required(void)
+{
+	reset_required = 0;
+}
+int get_reset_required(void)
+{
+	return reset_required;
+}
+
+EXPORT_SYMBOL_GPL(set_reset_required);
+EXPORT_SYMBOL_GPL(reset_reset_required);
+
 static irqreturn_t mipi_dsi_irq_handler(int irq, void *data)
 {
 	u32		mask0;
@@ -457,6 +495,7 @@ static irqreturn_t mipi_dsi_irq_handler(int irq, void *data)
 	u32		status0;
 	u32		status1;
 	struct mipi_dsi_info *mipi_dsi;
+	static int count = 0;
 
 	mipi_dsi = (struct mipi_dsi_info *)data;
 	mipi_dsi_read_register(mipi_dsi, MIPI_DSI_ERROR_ST0,  &status0);
@@ -468,6 +507,13 @@ static irqreturn_t mipi_dsi_irq_handler(int irq, void *data)
 		dev_err(&mipi_dsi->pdev->dev,
 		"mipi_dsi IRQ status0:0x%x, status1:0x%x!\n",
 		status0, status1);
+
+		if (((status1 != 0x10) && (status1 != 0x0))  && (mipid_esdp)) count++;
+		if (count >= 2)
+		{
+			set_reset_required();
+			emergency_restart();
+		}
 	}
 
 	return IRQ_HANDLED;
@@ -560,7 +606,8 @@ void mipi_dsi_power_off(struct mxc_dispdrv_handle *disp)
 	}
 }
 
-static int mipi_dsi_lcd_init(struct mipi_dsi_info *mipi_dsi,
+EXPORT_SYMBOL_GPL(mipi_dsi_lcd_init);
+int mipi_dsi_lcd_init(struct mipi_dsi_info *mipi_dsi,
 	struct mxc_dispdrv_setting *setting)
 {
 	int		err;
@@ -688,6 +735,8 @@ static int mipi_dsi_disp_init(struct mxc_dispdrv_handle *disp,
 		dev_err(dev, "failed to init mipi dsi lcd\n");
 		return ret;
 	}
+	memcpy(&lcd_local_setting, setting, sizeof(lcd_local_setting));
+	memcpy(&mipi_dsi_local, mipi_dsi, sizeof(mipi_dsi_local));
 
 	dev_dbg(dev, "MIPI DSI dispdrv inited!\n");
 	return ret;
@@ -780,6 +829,8 @@ static int device_reset(struct device *dev)
 	gpio_set_value_cansleep(gpio, active_low ? 0 : 1);
 	udelay(delay_us);
 	gpio_set_value_cansleep(gpio, active_low ? 1 : 0);
+
+	devm_gpio_free(dev, gpio);
 
 	return 0;
 }
@@ -980,6 +1031,7 @@ static int mipi_dsi_probe(struct platform_device *pdev)
 	dev_set_drvdata(&pdev->dev, mipi_dsi);
 
 	dev_info(&pdev->dev, "i.MX MIPI DSI driver probed\n");
+	memcpy(&pdev_local, pdev, sizeof(pdev_local));
 	return ret;
 
 dispdrv_reg_fail:
@@ -1045,6 +1097,9 @@ static void __exit mipi_dsi_cleanup(void)
 
 module_init(mipi_dsi_init);
 module_exit(mipi_dsi_cleanup);
+
+module_param(mipid_esdp, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
+MODULE_PARM_DESC(mipid_esdp, "Activate ESD Protection");
 
 MODULE_AUTHOR("Freescale Semiconductor, Inc.");
 MODULE_DESCRIPTION("i.MX MIPI DSI driver");

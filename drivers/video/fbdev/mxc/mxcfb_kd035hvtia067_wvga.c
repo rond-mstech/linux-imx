@@ -56,7 +56,7 @@
 #include "mipi_dsi.h"
 
 #define MIPI_DSI_MAX_RET_PACK_SIZE				(0x4)
-#define WDT
+//#define WDT
 #define DEBUG 1
 #undef dev_dbg
 #define dev_dbg(dev, format, arg...)		\

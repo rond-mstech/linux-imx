@@ -1,0 +1,113 @@
+/*
+ * Copyright (C) 2015-2019 MS Tech.
+ *
+ * Author: Ron Donio. ron.d@ms-technologies.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * Capacitive MIPI DSI Display for MS Tech i.MX6Q board/
+ */
+
+&mipi_dsi {
+	compatible = "fsl,imx6q-mipi-dsi";
+	dev_id = <0x0>;
+	disp_id = <0x1>;
+	lcd_panel = "KD035HVTIA067";
+	reset-gpios = <&gpio6 0 GPIO_ACTIVE_LOW>;
+	reset-delay-us = <50000>;
+	status = "disabled";
+};
+
+&mipi_csi {
+	status = "disabled";
+};
+
+&i2c3 {
+	/* Touch */
+	ctw6120_tsc@5c {
+		compatible = "sis,9200-ts";
+		reg = <0x5c>;
+		interrupt-parent = <&gpio5>;
+		interrupts = <31 0>;
+	};
+};
+
+
+&ldb {
+	status = "okay";
+
+	lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
+
+		display-timings {
+			native-mode = <&timing0c>;
+			timing0c: hsd100pxn1 {
+				clock-frequency = <32000000>;
+				hactive = <800>;
+				vactive = <480>;
+				hback-porch = <39>;
+				hfront-porch = <39>;
+				vback-porch = <29>;
+				vfront-porch = <13>;
+				hsync-len = <47>;
+				vsync-len = <2>;
+			};
+		};
+	};
+
+/*
+Interface: LVDS , Frame Freq= 60Hz.
+#define LCD_WIDTH 24
+#define LCD_XSIZE 1280
+#define LCD_YSIZE 800
+#define VBPD 48
+#define VFPD 80
+#define VSPW 32
+#define HBPD 50
+#define HFPD 16
+#define HSPW 18
+*/
+
+	lvds-channel@1 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
+		primary;
+
+		display-timings {
+			native-mode = <&timing1>;
+			timing1: hsd100pxn1 {
+				clock-frequency = <78566400>;
+				hactive = <1280>;
+				vactive = <800>;
+				hback-porch = <50>;
+				hfront-porch = <16>;
+				vback-porch = <48>;
+				vfront-porch = <80>;
+				hsync-len = <18>;
+				vsync-len = <32>;
+			};
+		};
+	};
+};
+
+&mxcfb1 {
+	interface_pix_fmt = "RGB24";
+	default_bpp = <24>;
+	status = "okay";
+};
+
+ 
+ &mxcfb2 {
+	status = "disabled";
+ };
+ 
+ &mxcfb3 {
+	status = "disabled";
+ };
+ 
+

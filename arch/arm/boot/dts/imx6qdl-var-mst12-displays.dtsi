@@ -32,6 +32,12 @@
 		interrupt-parent = <&gpio5>;
 		interrupts = <31 0>;
 	};
+
+	sensor1: lm75@48 {
+		compatible = "lm75";
+		reg = <0x48>;
+	};
+
 };
 
 

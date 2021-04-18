@@ -443,6 +443,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-var-som-cap.dtb \
 	imx6q-var-som-mst.dtb \
 	imx6q-var-som-mst12.dtb \
+	imx6q-var-som-mst156.dtb \
 	imx6q-var-som-res.dtb \
 	imx6q-var-som-vsc.dtb \
 	imx6qp-var-som-cap.dtb \

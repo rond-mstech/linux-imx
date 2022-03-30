@@ -1297,7 +1297,10 @@ static const struct usb_device_id option_ids[] = {
 		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg0 },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG3),
 		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
-
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG4),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG5),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
 
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE920),
 		.driver_info = (kernel_ulong_t)&telit_le920_blacklist },

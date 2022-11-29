@@ -281,6 +281,7 @@ static void option_instat_callback(struct urb *urb);
 #define TELIT_PRODUCT_CC864_SINGLE		0x1006
 #define TELIT_PRODUCT_DE910_DUAL		0x1010
 #define TELIT_PRODUCT_UE910_V2			0x1012
+
 #define TELIT_PRODUCT_LE910WW1_USBCFG1		0x1031
 #define TELIT_PRODUCT_LE910WW1_USBCFG3		0x1033
 #define TELIT_PRODUCT_LE910WW1_USBCFG4		0x1034
@@ -288,6 +289,8 @@ static void option_instat_callback(struct urb *urb);
 #define TELIT_PRODUCT_LE910WW1_USBCFG6		0x1036
 #define TELIT_PRODUCT_LE910WW1_USBCFG7		0x1037
 #define TELIT_PRODUCT_LE910WW1_USBCFG8		0x1038
+#define TELIT_PRODUCT_LE910WW1_USBCFG1_BOOT	0x9010
+
 #define TELIT_PRODUCT_LE922_USBCFG1		0x1040
 #define TELIT_PRODUCT_LE922_USBCFG2		0x1041
 #define TELIT_PRODUCT_LE922_USBCFG0		0x1042
@@ -559,6 +562,9 @@ static void option_instat_callback(struct urb *urb);
 #define WETELECOM_PRODUCT_6802			0x6802
 #define WETELECOM_PRODUCT_WMD300		0x6803
 
+/* Device needs ZLP */
+#define ZLP		BIT(17)
+
 struct option_blacklist_info {
 	/* bitmask of interface numbers blacklisted for send_setup */
 	const unsigned long sendsetup;
@@ -701,6 +707,10 @@ static const struct option_blacklist_info telit_le910ww1_blacklist_usbcfg0 = {
 
 static const struct option_blacklist_info telit_le910ww1_blacklist_usbcfg3 = {
 	.sendsetup = BIT(0),
+};
+
+static const struct option_blacklist_info telit_le910ww1_blacklist_usbcfg0_boot = {
+	.sendsetup = BIT(0) | BIT(17),
 };
 
 
@@ -1307,6 +1317,8 @@ static const struct usb_device_id option_ids[] = {
 		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG8),
 		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG1_BOOT),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg0_boot },
 
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE920),
 		.driver_info = (kernel_ulong_t)&telit_le920_blacklist },
@@ -2200,6 +2212,11 @@ static int option_attach(struct usb_serial *serial)
 						&blacklist->sendsetup)) {
 		data->use_send_setup = 1;
 	}
+
+	if (blacklist->sendsetup & ZLP)
+		data->use_zlp = 1;
+
+
 	spin_lock_init(&data->susp_lock);
 
 	usb_set_serial_data(serial, data);

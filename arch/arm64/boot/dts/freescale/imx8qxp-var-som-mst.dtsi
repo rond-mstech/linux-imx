@@ -37,34 +37,34 @@
 	gpio-keys {
 		compatible = "gpio-keys";
 
-		back {
-			label = "Back";
-			gpios = <&pca9534 1 GPIO_ACTIVE_LOW>;
-			linux,code = <KEY_BACK>;
-		};
+//		back {
+//			label = "Back";
+//			gpios = <&pca9534 1 GPIO_ACTIVE_LOW>;
+//			linux,code = <KEY_BACK>;
+//		};
 
-		home {
-			label = "Home";
-			gpios = <&pca9534 2 GPIO_ACTIVE_LOW>;
-			linux,code = <KEY_HOME>;
-		};
+//		home {
+//			label = "Home";
+//			gpios = <&pca9534 2 GPIO_ACTIVE_LOW>;
+//			linux,code = <KEY_HOME>;
+//		};
 
-		 menu {
-			label = "Menu";
-			gpios = <&pca9534 3 GPIO_ACTIVE_LOW>;
-			linux,code = <KEY_MENU>;
-		};
+//		 menu {
+//			label = "Menu";
+//			gpios = <&pca9534 3 GPIO_ACTIVE_LOW>;
+//			linux,code = <KEY_MENU>;
+//		};
 	};
 
-	leds {
-		compatible = "gpio-leds";
-
-		heartbeat {
-			label = "heartbeat";
-			gpios = <&pca9534 0 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "heartbeat";
-		};
-	};
+//	leds {
+//		compatible = "gpio-leds";
+//
+//		heartbeat {
+//			label = "heartbeat";
+//			gpios = <&pca9534 0 GPIO_ACTIVE_HIGH>;
+//			linux,default-trigger = "heartbeat";
+//		};
+//	};
 
 	lvds_panel {
 		compatible = "sgd,gktw70sdae4se", "panel-lvds";
@@ -148,7 +148,7 @@
 
 &cameradev {
 	parallel_csi;
-	status = "okay";
+	status = "disabled";
 };
 
 &cm40_intmux {
@@ -230,7 +230,7 @@
 	phy-mode = "rgmii-rxid";
 	phy-handle = <&ethphy1>;
 	fsl,magic-packet;
-	status = "okay";
+	status = "disabled";
 	phy-supply = <&reg_phy1_pwr>;
 	phy-reset-gpios = <&pca9534 5 GPIO_ACTIVE_LOW>;
 	phy-reset-duration = <100>;
@@ -240,7 +240,7 @@
 &flexcan3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan3>;
-	status = "okay";
+	status = "disabled";
 };
 
 &gpu_3d0 {
@@ -257,7 +257,7 @@
 
 	/* MIPI-CSI2 sensor */
 	ov5640_mipi: ov5640_mipi@3c {
-		status = "okay";
+		status = "disabled";
 		compatible = "ovti,ov5640";
 		reg = <0x3c>;
 		clocks = <&xtal24m>;
@@ -296,24 +296,6 @@
 			line-name = "usb3_sel";
 		};
 	};
-
-	/* USB-C controller */
-	typec_ptn5150: typec@3d {
-		status = "okay";
-		compatible = "nxp,ptn5150";
-		reg = <0x3d>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_typec>;
-		interrupt-parent = <&lsio_gpio5>;
-		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>;
-		irq-is-id-quirk;
-
-		port {
-			typec_dr_sw: endpoint {
-				remote-endpoint = <&usb3_drd_sw>;
-			};
-		};
-	};
 };
 
 &i2c2 {
@@ -345,6 +327,25 @@
 		compatible = "dallas,ds1337";
 		reg = <0x68>;
 	};
+
+	/* USB-C controller */
+	typec_ptn5150: typec@3d {
+		status = "okay";
+		compatible = "nxp,ptn5150";
+		reg = <0x3d>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_typec>;
+		interrupt-parent = <&lsio_gpio5>;
+		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>;
+		irq-is-id-quirk;
+
+		port {
+			typec_dr_sw: endpoint {
+				remote-endpoint = <&usb3_drd_sw>;
+			};
+		};
+	};
+	
 };
 
 &i2c3 {
@@ -369,7 +370,7 @@
 		csi_id = <0>;
 		mclk = <24000000>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 
 		port {
 			ov5640_ep: endpoint {
@@ -688,7 +689,7 @@
 &mipi_csi_0 {
 	#address-cells = <1>;
 	#size-cells = <0>;
-	status = "okay";
+	status = "disabled";
 
 	/* Camera 0  MIPI CSI-2 (CSIS0) */
 	port@0 {
@@ -703,7 +704,7 @@
 &parallel_csi {
 	#address-cells = <1>;
 	#size-cells = <0>;
-	status = "okay";
+	status = "disabled";
 
 	port@0 {
 		reg = <0>;
@@ -746,7 +747,7 @@
 	status = "okay";
 	dr_mode = "host";
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_usb1otg>;
+//	pinctrl-0 = <&pinctrl_usb1otg>;
 };
 
 &usb3_phy {

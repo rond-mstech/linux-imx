@@ -714,7 +714,7 @@
 	pinctrl-0 = <&pinctrl_pcieb>;
 	reset-gpio = <&lsio_gpio0 29 GPIO_ACTIVE_LOW>;
 	ext_osc = <1>;
-	status = "okay";
+	status = "disabled";
 };
 
 &pwm_mipi_lvds0 {

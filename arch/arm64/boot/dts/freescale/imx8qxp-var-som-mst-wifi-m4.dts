@@ -8,5 +8,5 @@
 #include "imx8qxp-var-som-mst-m4.dtsi"
 
 / {
-	model = "Variscite VAR-SOM-MX8X on Symphony-Board WIFI M4";
+	model = "Variscite VAR-SOM-MX8X on Threatscan Board WIFI M4";
 };

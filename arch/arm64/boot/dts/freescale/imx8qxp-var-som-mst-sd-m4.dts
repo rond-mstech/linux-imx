@@ -2,6 +2,7 @@
 /*
  * Copyright 2019-2022 Variscite Ltd.
  */
+#define MSTECH
 
 #include "imx8qxp-var-som-mst-sd.dts"
 #include "imx8qxp-var-som-mst-m4.dtsi"

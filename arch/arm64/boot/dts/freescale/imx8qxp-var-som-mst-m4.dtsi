@@ -81,7 +81,7 @@
 /* Note: Other interfaces may need to be disabled if accessed from M4 firmware */
 
 &i2c3 {
-	status = "disabled";
+	status = "okay";
 };
 
 &lpuart1 {

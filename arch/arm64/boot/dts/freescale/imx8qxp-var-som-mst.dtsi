@@ -519,7 +519,9 @@
 
 	pinctrl_pcieb: pciebgrp {
 		fsl,pins = <
-			IMX8QXP_SAI1_RXD_LSIO_GPIO0_IO29			0x60000021
+//RD			IMX8QXP_SAI1_RXD_LSIO_GPIO0_IO29			0x60000021
+			IMX8QXP_SPI2_CS0_LSIO_GPIO1_IO00			0x60000021
+			
 		>;
 	};
 
@@ -724,8 +726,9 @@
 	compatible = "fsl,imx8qxp-pcie","snps,dw-pcie";
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcieb>;
-	reset-gpio = <&lsio_gpio0 29 GPIO_ACTIVE_LOW>;
-	ext_osc = <1>;
+//RD	reset-gpio = <&lsio_gpio0 29 GPIO_ACTIVE_LOW>;
+	reset-gpio = <&lsio_gpio1 0 GPIO_ACTIVE_LOW>;
+	ext_osc = <0>;
 	status = "disabled";
 };
 
@@ -736,7 +739,7 @@
 };
 
 &rtc {
-	status = "disabled";
+	status = "okay";
 };
 
 &usbphy1 {

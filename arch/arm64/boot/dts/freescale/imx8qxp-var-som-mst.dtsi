@@ -284,6 +284,7 @@
 		reg = <0x20>;
 		gpio-controller;
 		pinctrl-names = "default";
+		status = "disabled";
 		pinctrl-0 = <&pinctrl_pca9534>;
 		interrupt-parent = <&lsio_gpio3>;
 		interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
@@ -520,7 +521,13 @@
 	pinctrl_pcieb: pciebgrp {
 		fsl,pins = <
 //RD			IMX8QXP_SAI1_RXD_LSIO_GPIO0_IO29			0x60000021
+//Reset
 			IMX8QXP_SPI2_CS0_LSIO_GPIO1_IO00			0x60000021
+//Some clock ????
+//			IMX8QXP_PCIE_CTRL0_CLKREQ_B_LSIO_GPIO4_IO01		0x60000021
+//Disable
+			IMX8QXP_SAI0_TXFS_LSIO_GPIO0_IO28			0x60000021
+//			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10			0x40000021
 			
 		>;
 	};
@@ -728,8 +735,9 @@
 	pinctrl-0 = <&pinctrl_pcieb>;
 //RD	reset-gpio = <&lsio_gpio0 29 GPIO_ACTIVE_LOW>;
 	reset-gpio = <&lsio_gpio1 0 GPIO_ACTIVE_LOW>;
+	disable-gpio = <&lsio_gpio0 28 GPIO_ACTIVE_LOW>;
 	ext_osc = <0>;
-	status = "disabled";
+	status = "okay";
 };
 
 &pwm_mipi_lvds0 {

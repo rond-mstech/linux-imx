@@ -304,6 +304,17 @@ static void option_instat_callback(struct urb *urb);
 #define TELIT_PRODUCT_LE920A4_1213		0x1213
 #define TELIT_PRODUCT_LE920A4_1214		0x1214
 
+#define TELIT_PRODUCT_LE910WW1_USBCFG1	0x1031
+#define TELIT_PRODUCT_LE910WW1_USBCFG3	0x1033
+#define TELIT_PRODUCT_LE910WW1_USBCFG4	0x1034
+#define TELIT_PRODUCT_LE910WW1_USBCFG5	0x1035
+#define TELIT_PRODUCT_LE910WW1_USBCFG6	0x1036
+#define TELIT_PRODUCT_LE910WW1_USBCFG7	0x1037
+#define TELIT_PRODUCT_LE910WW1_USBCFG8	0x1038
+#define TELIT_PRODUCT_LE910WW1_USBCFG1_BOOT	0x9010
+
+
+
 /* ZTE PRODUCTS */
 #define ZTE_VENDOR_ID				0x19d2
 #define ZTE_PRODUCT_MF622			0x0001
@@ -1260,6 +1271,25 @@ static const struct usb_device_id option_ids[] = {
 	  .driver_info = NCTRL(2) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9010),				/* Telit SBL FN980 flashing device */
 	  .driver_info = NCTRL(0) | ZLP },
+	  
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG1),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg0 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG3),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG4),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG5),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG6),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG7),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG8),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG1_BOOT),
+		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg0_boot },
+	  
+	  
 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, ZTE_PRODUCT_MF622, 0xff, 0xff, 0xff) }, /* ZTE WCDMA products */
 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0002, 0xff, 0xff, 0xff),
 	  .driver_info = RSVD(1) },

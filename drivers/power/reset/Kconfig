@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 menuconfig POWER_RESET
 	bool "Board level reset or power off"
+	select POWER_RESET_GPIO
 	help
 	  Provides a number of drivers which either reset a complete board
 	  or shut it down, by manipulating the main power supply on the board.

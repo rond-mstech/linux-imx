@@ -187,8 +187,14 @@
 //RD Audio enable
 			IMX8QXP_ESAI0_TX4_RX1_LSIO_GPIO0_IO08			0xC0000031
 //RD Power Off
-			IMX8QXP_SPI0_SCK_LSIO_GPIO1_IO04			0xC0000031
+//			IMX8QXP_SPI0_SCK_LSIO_GPIO1_IO04			0xC0000031
+			IMX8QXP_SPI0_SCK_LSIO_GPIO1_IO04			0x00000020
 			IMX8QXP_MIPI_CSI0_MCLK_OUT_LSIO_GPIO3_IO04		0xC0000031
+//PumPos1
+			IMX8QXP_ESAI0_TX2_RX3_LSIO_GPIO0_IO06			0x60000021
+//Compressor
+			IMX8QXP_CSI_PCLK_LSIO_GPIO3_IO00			0x60000021
+			
 			
 		>;
 	};
@@ -446,7 +452,7 @@
 		ti,debounce-rep = /bits/ 16 <1>;
 		ti,settle-delay-usec = /bits/ 16 <150>;
 		ti,keep-vref-on;
-		status = "okay";
+		status = "disabled";
 	};
 };
 

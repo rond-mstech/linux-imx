@@ -51,6 +51,9 @@ static int gpio_poweroff_probe(struct platform_device *pdev)
 	bool input = false;
 	enum gpiod_flags flags;
 
+#if 0
+TODO:
+Confilcts with PSCI we take control here.
 	/* If a pm_power_off function has already been added, leave it alone */
 	if (pm_power_off != NULL) {
 		dev_err(&pdev->dev,
@@ -58,7 +61,7 @@ static int gpio_poweroff_probe(struct platform_device *pdev)
 		       __func__);
 		return -EBUSY;
 	}
-
+#endif
 	input = device_property_read_bool(&pdev->dev, "input");
 	if (input)
 		flags = GPIOD_IN;
@@ -75,6 +78,8 @@ static int gpio_poweroff_probe(struct platform_device *pdev)
 		return PTR_ERR(reset_gpio);
 
 	pm_power_off = &gpio_poweroff_do_poweroff;
+	dev_err(&pdev->dev, "%s: pm_power_off function registered\n", __func__);
+
 	return 0;
 }
 

@@ -65,16 +65,17 @@
 			no-map;
 		};
 
-		rpmsg_reserved: rpmsg@0x90500000 {
-			no-map;
-			reg = <0 0x90500000 0 0x400000>;
-		};
+//		rpmsg_reserved: rpmsg@0x90500000 {
+//			no-map;
+//			reg = <0 0x90500000 0 0x400000>;
+//		};
+//
+//		rpmsg_dma_reserved:rpmsg_dma@0x90400000 {
+//			compatible = "shared-dma-pool";
+//			no-map;
+//			reg = <0 0x90900000 0 0x100000>;
+//		};
 
-		rpmsg_dma_reserved:rpmsg_dma@0x90400000 {
-			compatible = "shared-dma-pool";
-			no-map;
-			reg = <0 0x90900000 0 0x100000>;
-		};
 	};
 };
 
@@ -92,15 +93,15 @@
 	status = "disabled";
 };
 
-&rpmsg{
-	/*
-	 * 64K for one rpmsg instance:
-	 */
-	vdev-nums = <2>;
-	reg = <0x0 0x90000000 0x0 0x20000>;
-	memory-region = <&rpmsg_dma_reserved>;
-	status = "okay";
-};
+//&rpmsg{
+//	/*
+//	 * 64K for one rpmsg instance:
+//	 */
+//	vdev-nums = <2>;
+//	reg = <0x0 0x90000000 0x0 0x20000>;
+//	memory-region = <&rpmsg_dma_reserved>;
+//	status = "okay";
+//};
 
 
 

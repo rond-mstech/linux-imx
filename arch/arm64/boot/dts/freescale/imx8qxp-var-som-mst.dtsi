@@ -7,10 +7,6 @@
 #include "imx8qxp-var-som.dtsi"
 
 / {
-	aliases {
-		gpio8 = &pca9534;
-	};
-
 	chosen {
 		stdout-path = &lpuart3;
 	};
@@ -50,16 +46,6 @@
 		gpios = <&lsio_gpio1 4 GPIO_ACTIVE_LOW>;
 	};
 
-//	leds {
-//		compatible = "gpio-leds";
-//
-//		heartbeat {
-//			label = "heartbeat";
-//			gpios = <&pca9534 0 GPIO_ACTIVE_HIGH>;
-//			linux,default-trigger = "heartbeat";
-//		};
-//	};
-
 	lvds_panel {
 		compatible = "sgd,gktw70sdae4se", "panel-lvds";
 		backlight = <&backlight>;
@@ -96,6 +82,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+/*
 		reg_phy1_vsel: regulator-phy1-vsel {
 			compatible = "regulator-fixed";
 			regulator-name = "phy1_vsel";
@@ -116,7 +103,7 @@
 			enable-active-high;
 			regulator-always-on;
 		};
-
+*/
 		reg_usb_otg1_vbus: regulator-usb-otg1-vbus {
 			compatible = "regulator-fixed";
 			regulator-name = "usb_otg1_vbus";
@@ -271,26 +258,6 @@
 			};
 		};
 	};
-
-	/* GPIO expander */
-	pca9534:gpio@20 {
-		compatible = "nxp,pca9534";
-		reg = <0x20>;
-		gpio-controller;
-		pinctrl-names = "default";
-		status = "disabled";
-		pinctrl-0 = <&pinctrl_pca9534>;
-		interrupt-parent = <&lsio_gpio3>;
-		interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
-		#gpio-cells = <2>;
-
-		usb3_sel_hog {
-			gpio-hog;
-			gpios = <4 0>;
-			output-low;
-			line-name = "usb3_sel";
-		};
-	};
 };
 
 &i2c2 {
@@ -382,6 +349,7 @@
 				pclk-sample = <1>;
 			};
 		};
+
 	};
 	
 };
@@ -494,12 +462,6 @@
 			IMX8QXP_CSI_VSYNC_CI_PI_VSYNC				0xC0000041
 			IMX8QXP_CSI_EN_LSIO_GPIO3_IO02				0xC0000041
 			IMX8QXP_CSI_RESET_LSIO_GPIO3_IO03			0xC0000041
-		>;
-	};
-
-	pinctrl_pca9534: pca9534grp {
-		fsl,pins = <
-			IMX8QXP_MIPI_CSI0_MCLK_OUT_LSIO_GPIO3_IO04		0xC0000041
 		>;
 	};
 
@@ -653,7 +615,7 @@ gpio-poweroff {
 &lpuart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpuart2>;
-	status = "okay";
+	status = "disabled";
 };
 
 /* Console */
@@ -678,18 +640,18 @@ gpio-poweroff {
 	pad-wakeup = <IMX8QXP_UART1_CTS_B SC_PAD_WAKEUP_LOW_LVL 24>;
 };
 
-&lsio_gpio3 {
-	/* Enable wakeup-source from all pca9534 gpio-keys*/
-
-	pad-wakeup-num = <1>;	/* Total number of wakeup pads in gpio1 bank */
-
-	/*
-	 IMX8QXP_MIPI_CSI0_MCLK_OUT: PCA9534 IRQ pin id
-	 SC_PAD_WAKEUP_LOW_LVL:      trigger type
-	 4:                          PCA9534 IRQ gpio pin
-	*/
-	pad-wakeup = <IMX8QXP_MIPI_CSI0_MCLK_OUT SC_PAD_WAKEUP_LOW_LVL 4>;
-};
+//&lsio_gpio3 {
+//	/* Enable wakeup-source from all pca9534 gpio-keys*/
+//
+//	pad-wakeup-num = <1>;	/* Total number of wakeup pads in gpio1 bank */
+//
+//	/*
+//	 IMX8QXP_MIPI_CSI0_MCLK_OUT: PCA9534 IRQ pin id
+//	 SC_PAD_WAKEUP_LOW_LVL:      trigger type
+//	 4:                          PCA9534 IRQ gpio pin
+//	*/
+//	pad-wakeup = <IMX8QXP_MIPI_CSI0_MCLK_OUT SC_PAD_WAKEUP_LOW_LVL 4>;
+//};
 
 /*
 &lsio_gpio3 {

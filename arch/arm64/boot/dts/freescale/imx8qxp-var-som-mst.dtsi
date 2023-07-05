@@ -284,6 +284,7 @@
 	};
 
 	sensor1: lm75@48 {
+		status = "okay";
                compatible = "lm75";
                reg = <0x48>;
        };

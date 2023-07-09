@@ -592,7 +592,6 @@ static void option_instat_callback(struct urb *urb);
 /* Device needs ZLP */
 #define ZLP		BIT(17)
 
-
 static const struct usb_device_id option_ids[] = {
 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_COLT) },
 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA) },
@@ -1273,21 +1272,21 @@ static const struct usb_device_id option_ids[] = {
 	  .driver_info = NCTRL(0) | ZLP },
 	  
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG1),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg0 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG3),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG4),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG5),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG6),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG7),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG8),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg3 },
+		.driver_info = NCTRL(0) | RSVD(3) },
 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE910WW1_USBCFG1_BOOT),
-		.driver_info = (kernel_ulong_t)&telit_le910ww1_blacklist_usbcfg0_boot },
+		.driver_info = NCTRL(0) | NCTRL(17)},
 	  
 	  
 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, ZTE_PRODUCT_MF622, 0xff, 0xff, 0xff) }, /* ZTE WCDMA products */

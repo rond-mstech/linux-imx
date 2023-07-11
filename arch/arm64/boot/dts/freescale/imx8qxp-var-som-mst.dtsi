@@ -714,7 +714,7 @@ gpio-poweroff {
 };
 
 &rtc {
-	status = "okay";
+	status = "disabled";
 };
 
 &usbphy1 {

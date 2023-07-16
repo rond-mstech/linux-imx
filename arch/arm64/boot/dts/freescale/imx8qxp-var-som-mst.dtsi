@@ -559,7 +559,7 @@
 &ldb1 {
 	status = "okay";
 	lvds-channel@0 {
-		fsl,data-mapping = "jeida";
+		fsl,data-mapping = "spwg";
 		fsl,data-width = <24>;
 		status = "okay";
 

@@ -173,6 +173,22 @@
 	};
 };
 
+/*
++#define ON_Printer     IMX_GPIO_NR(0,7)
++
++
++#
++#
++
++#define Led_Y          IMX_GPIO_NR(1,21)
++#define Led_R          IMX_GPIO_NR(0,3)
++#define Led_G          IMX_GPIO_NR(0,4)
++#define Fan            IMX_GPIO_NR(3,23)
++#define Blower         IMX_GPIO_NR(0,1)
++#define PWR_FAN_EN     IMX_GPIO_NR(0,9)
++
+*/
+
 &iomuxc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hog>;
@@ -187,14 +203,35 @@
 //RD Audio enable
 			IMX8QXP_ESAI0_TX4_RX1_LSIO_GPIO0_IO08			0xC0000031
 //RD Power Off
-//			IMX8QXP_SPI0_SCK_LSIO_GPIO1_IO04			0xC0000031
 			IMX8QXP_SPI0_SCK_LSIO_GPIO1_IO04			0x00000020
 			IMX8QXP_MIPI_CSI0_MCLK_OUT_LSIO_GPIO3_IO04		0xC0000031
-//PumPos1
-//			IMX8QXP_ESAI0_TX2_RX3_LSIO_GPIO0_IO06			0x60000021
-//Compressor
-//			IMX8QXP_CSI_PCLK_LSIO_GPIO3_IO00			0x60000021
-			
+// By default closing all GPIO.
+//#define Finf_Clr       IMX_GPIO_NR(4,5)
+			IMX8QXP_USB_SS3_TC2_LSIO_GPIO4_IO05			0x00000020
+//#define acA0           IMX_GPIO_NR(0,29)
+			IMX8QXP_SAI1_RXD_LSIO_GPIO0_IO29			0x00000020
+//define acA1           IMX_GPIO_NR(3,3)
+			IMX8QXP_CSI_RESET_LSIO_GPIO3_IO03			0x00000020
+//define acA2           IMX_GPIO_NR(0,10)
+			IMX8QXP_SPDIF0_RX_LSIO_GPIO0_IO10			0x00000020
+//#define acEN           IMX_GPIO_NR(0,11)
+			IMX8QXP_SPDIF0_TX_LSIO_GPIO0_IO11			0x60000020
+//#define PumpForward    IMX_GPIO_NR(1,8)
+			IMX8QXP_SPI0_CS0_LSIO_GPIO1_IO08			0x60000020
+//#define MainHeat       IMX_GPIO_NR(1,5)
+			IMX8QXP_SPI0_SDI_LSIO_GPIO1_IO05			0x60000020
+//#define RegHeat        IMX_GPIO_NR(1,23)
+			IMX8QXP_UART2_TX_LSIO_GPIO1_IO23			0x60000020
+//#define PumpReverse    IMX_GPIO_NR(1,24)
+			IMX8QXP_UART2_RX_LSIO_GPIO1_IO24			0x60000020
+//#define Compressor_DC  IMX_GPIO_NR(3,0)
+			IMX8QXP_CSI_PCLK_LSIO_GPIO3_IO00			0x60000020
+//#define CHARGE_EN      IMX_GPIO_NR(0,19)
+			IMX8QXP_MCLK_IN0_LSIO_GPIO0_IO19			0x60000020
+//#define BackFan        IMX_GPIO_NR(1,1)
+			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x60000020
+//#define Buzzer         IMX_GPIO_NR(4,3)
+			IMX8QXP_USB_SS3_TC0_LSIO_GPIO4_IO03			0x60000020
 			
 		>;
 	};

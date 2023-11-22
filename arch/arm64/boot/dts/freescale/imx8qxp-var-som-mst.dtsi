@@ -77,6 +77,8 @@
 			};
 		};
 	};
+	
+	
 
 	regulators {
 		compatible = "simple-bus";
@@ -361,6 +363,7 @@
 	};
 	
 };
+
 
 &iomuxc {
 	pinctrl_captouch: captouchgrp {
@@ -712,7 +715,7 @@ gpio-poweroff {
 	reset-gpio = <&lsio_gpio1 0 GPIO_ACTIVE_LOW>;
 	disable-gpio = <&lsio_gpio0 28 GPIO_ACTIVE_LOW>;
 	ext_osc = <1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &pwm_mipi_lvds0 {

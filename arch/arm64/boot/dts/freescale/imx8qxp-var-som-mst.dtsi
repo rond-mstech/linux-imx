@@ -116,16 +116,17 @@
 			enable-active-high;
 		};
 
-
-//		reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
-//			compatible = "regulator-fixed";
-//			regulator-name = "sd_pwr";
-//			regulator-min-microvolt = <3000000>;
-//			regulator-max-microvolt = <3000000>;
-////			gpio = <&lsio_gpio1 7 GPIO_ACTIVE_HIGH>;
-//			off-on-delay = <3480>;
-//			enable-active-high;
-//		};
+#if 0
+		reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
+			compatible = "regulator-fixed";
+			regulator-name = "sd_pwr";
+			regulator-min-microvolt = <3000000>;
+			regulator-max-microvolt = <3000000>;
+//			gpio = <&lsio_gpio1 7 GPIO_ACTIVE_HIGH>;
+			off-on-delay = <3480>;
+			enable-active-high;
+		};
+#endif
 
 	};
 };
@@ -478,25 +479,14 @@
 
 	pinctrl_pwm_mipi_lvds0: mipi_lvds0_pwm_grp {
 		fsl,pins = <
-//			IMX8QXP_MIPI_DSI0_GPIO0_00_MIPI_DSI0_PWM0_OUT		0x00000020
 //mstech backlight
 			IMX8QXP_MIPI_DSI0_GPIO0_00_MIPI_DSI0_PWM0_OUT		0x00000020
-//			IMX8QXP_SPI0_CS1_LSIO_GPIO1_IO07			0x00000020
-			
 		>;
 	};
 
 	pinctrl_pcieb: pciebgrp {
 		fsl,pins = <
-//RD			IMX8QXP_SAI1_RXD_LSIO_GPIO0_IO29			0x60000021
-//Reset
 			IMX8QXP_SPI2_CS0_LSIO_GPIO1_IO00			0x60000021
-//Some clock ????
-//			IMX8QXP_PCIE_CTRL0_CLKREQ_B_LSIO_GPIO4_IO01		0x60000021
-//Disable
-//			IMX8QXP_SAI0_TXFS_LSIO_GPIO0_IO28			0x60000021
-//RD			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10			0x40000021
-			
 		>;
 	};
 
@@ -711,7 +701,6 @@ gpio-poweroff {
 	compatible = "fsl,imx8qxp-pcie","snps,dw-pcie";
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcieb>;
-//RD	reset-gpio = <&lsio_gpio0 29 GPIO_ACTIVE_LOW>;
 	reset-gpio = <&lsio_gpio1 0 GPIO_ACTIVE_LOW>;
 	disable-gpio = <&lsio_gpio0 28 GPIO_ACTIVE_LOW>;
 	ext_osc = <1>;

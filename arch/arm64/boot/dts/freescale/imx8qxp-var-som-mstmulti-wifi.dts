@@ -8,7 +8,7 @@
 #include "imx8qxp-var-som-mst.dtsi"
 
 / {
-	model = "Variscite VAR-SOM-MX8X on Threatscan Board WIFI";
+	model = "Variscite VAR-SOM-MX8X on Multiscan Board WIFI";
 };
 
 &iomuxc {

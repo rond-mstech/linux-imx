@@ -32,9 +32,10 @@
 #else
 	backlight: backlight {
 		compatible = "pwm-backlight";
-		pwms = <&pwm_mipi_lvds0 0 50000>;
+		pwms = <&pwm_mipi_lvds0 0 800>;
 
 		brightness-levels = <0 4 8 16 32 64 128 248>;
+
 		default-brightness-level = <7>;
 		status = "okay";
 	};
@@ -729,6 +730,7 @@ gpio-poweroff {
 		video-mode = <2>;
 		width-mm = <49>;
 		height-mm = <73>;
+
 
 		port@0 {
 			reg = <0>;

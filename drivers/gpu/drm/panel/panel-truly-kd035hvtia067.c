@@ -137,55 +137,6 @@ static int mipi_dsi_dcs_cmd(struct truly_panel *panel,
 	return err;
 }
 
-static int rad_panel_push_cmd_list(struct mipi_dsi_device *dsi,
-				   struct cmd_set_entry const *cmd_set,
-				   size_t count)
-{
-	size_t i;
-	int ret = 0;
-
-	for (i = 0; i < count; i++) {
-		const struct cmd_set_entry *entry = cmd_set++;
-		u8 buffer[2] = { entry->cmd, entry->param };
-
-		ret = mipi_dsi_generic_write(dsi, &buffer, sizeof(buffer));
-		if (ret < 0)
-			return ret;
-	}
-
-	return ret;
-};
-
-//static int rad_dsi_dcs_read(struct device *dev, const u8 cmd, u8 *data, int len)
-//{
-//	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
-//	int ret;
-//
-//	ret = mipi_dsi_dcs_read(dsi, cmd, data, len);
-//	if (ret < 0) {
-//		dev_err(dev, "could not read DCS CMD %02x\n", cmd);
-//		return ret;
-//	}
-//
-//	dev_info(dev, "DSI read CMD %02x = %02x\n", cmd, *data);
-//
-//	return 0;
-//}
-
-static int rad_dsi_dcs_read(struct device *dev, u8 cmd, void *data, size_t len)
-{
-	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
-	int ret;
-
-
-	ret = mipi_dsi_dcs_read(dsi, cmd, data, len);
-	if (ret < 0) {
-		dev_err(dev, "error %d reading dcs seq(%#x)\n", ret, cmd);
-	}
-
-	return ret;
-}
-
 /*
  *
  */
@@ -216,20 +167,13 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	CHECK_RETCODE(err);
 	msleep(120);
 
-//	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
-//	buf[0] = 0xD3;
-//	err =  mipi_dsi_generic_read(dsi, buf, 2,  read_buf, 4);
-//	CHECK_RETCODE(err);
-//	model = (read_buf[0] & 0xFF00) >> 8;
-//	id    = (read_buf[0] & 0xFF0000) >> 16;
-//	dev_info(dev, "MIPI DSI LCD ID:0x%x MODEL:0x%x.\n", id, model);
-
-
-//	err = rad_dsi_dcs_read(dev, 0xD3, (u8 *)buf, 4);
-//	CHECK_RETCODE(err);
-//	model = (read_buf[0] & 0xFF00) >> 8;
-//	id    = (read_buf[0] & 0xFF0000) >> 16;
-//	dev_info(dev, "MIPI DSI LCD ID:0x%x MODEL:0x%x.\n", id, model);
+	buf[0] = 0xD3;
+	err =  mipi_dsi_generic_read(dsi, &buf[0], 2,  read_buf, 4);
+	if (err >=0 ){
+		model = (read_buf[0] & 0xFF00) >> 8;
+		id    = (read_buf[0] & 0xFF0000) >> 16;
+		dev_info(dev, "MIPI DSI LCD ID:0x%x MODEL:0x%x.\n", id, model);
+	}
 
 	/* Positive Gamma Control */
 	buf[0] = 0x0E0400E0;
@@ -595,8 +539,6 @@ static int color_format_from_dsi_format(enum mipi_dsi_pixel_format format)
 static int truly_panel_prepare(struct drm_panel *panel)
 {
 	struct truly_panel *rad = to_truly_panel(panel);
-	struct mipi_dsi_device *dsi = rad->dsi;
-	struct device *dev = &dsi->dev;
 	int ret;
 
 	if (rad->prepared)
@@ -651,22 +593,11 @@ static int kd035_enable(struct truly_panel *panel)
 	int color_format = color_format_from_dsi_format(dsi->format);
 	int ret;
 
-	dev_err(dev, "%s enterd\n", __FUNCTION__);
-
 	if (panel->enabled){
-		dev_err(dev, "%s quick ended\n", __FUNCTION__);
 		return 0;
 	}
 
 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-
-//	ret = rad_panel_push_cmd_list(dsi,
-//				      &mcs_rm67191[0],
-//				      ARRAY_SIZE(mcs_rm67191));
-//	if (ret < 0) {
-//		dev_err(dev, "Failed to send MCS (%d)\n", ret);
-//		goto fail;
-//	}
 
 	/* Select User Command Set table (CMD1) */
 	ret = mipi_dsi_generic_write(dsi, (u8[]){ WRMAUCCTR, 0x00 }, 2);
@@ -686,7 +617,6 @@ static int kd035_enable(struct truly_panel *panel)
 	if (ret < 0)
 		goto fail;
 
-	dev_err(dev, "%s %d\n", __FUNCTION__, __LINE__);
 	/* Set DSI mode */
 	ret = mipi_dsi_generic_write(dsi, (u8[]){ 0xC2, 0x0B }, 2);
 	if (ret < 0) {
@@ -694,7 +624,6 @@ static int kd035_enable(struct truly_panel *panel)
 		goto fail;
 	}
 
-	dev_err(dev, "%s %d\n", __FUNCTION__, __LINE__);
 	/* Set tear ON */
 	ret = mipi_dsi_dcs_set_tear_on(dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
 	if (ret < 0) {
@@ -733,8 +662,6 @@ static int kd035_enable(struct truly_panel *panel)
 
 
 	backlight_enable(panel->backlight);
-
-	dev_err(dev, "%s ended\n", __FUNCTION__);
 
 	panel->enabled = true;
 	return 0;
@@ -894,7 +821,6 @@ static const struct truly_platform_data truly_kd035 = {
 
 static const struct of_device_id truly_of_match[] = {
 	{ .compatible = "truly,kd035", .data = &truly_kd035 },
-	{ .compatible = "truly,kd035-1", .data = &truly_kd035 },
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, truly_of_match);
@@ -962,9 +888,9 @@ static int truly_panel_probe(struct mipi_dsi_device *dsi)
 	}
 
 	memset(&bl_props, 0, sizeof(bl_props));
-	bl_props.type = BACKLIGHT_PLATFORM;	//BACKLIGHT_RAW;
-//	bl_props.brightness = 7;
-//	bl_props.max_brightness = 7;
+	bl_props.type = BACKLIGHT_RAW; //BACKLIGHT_PLATFORM
+	bl_props.brightness = 7;
+	bl_props.max_brightness = 7;
 
 	panel->backlight = devm_backlight_device_register(dev, dev_name(dev),
 							  dev, dsi, &truly_bl_ops,
@@ -1007,7 +933,7 @@ static int truly_panel_remove(struct mipi_dsi_device *dsi)
 
 	return 0;
 }
-
+#if 0
 static void truly_panel_shutdown(struct mipi_dsi_device *dsi)
 {
 	struct truly_panel *rad = mipi_dsi_get_drvdata(dsi);
@@ -1015,7 +941,7 @@ static void truly_panel_shutdown(struct mipi_dsi_device *dsi)
 	truly_panel_disable(&rad->panel);
 	truly_panel_unprepare(&rad->panel);
 }
-
+#endif
 static struct mipi_dsi_driver truly_panel_driver = {
 	.driver = {
 		.name = "panel-truly-kd035",
@@ -1023,7 +949,9 @@ static struct mipi_dsi_driver truly_panel_driver = {
 	},
 	.probe = truly_panel_probe,
 	.remove = truly_panel_remove,
-//	.shutdown = truly_panel_shutdown,
+#if 0
+	.shutdown = truly_panel_shutdown,
+#endif
 };
 module_mipi_dsi_driver(truly_panel_driver);
 

@@ -57,45 +57,6 @@ do {								\
  * There is no description in the Reference Manual about these commands.
  * We received them from vendor, so just use them as is.
  */
-static const struct cmd_set_entry mcs_rm67191[] = {
-	{0xFE, 0x0B}, {0x28, 0x40}, {0x29, 0x4F}, {0xFE, 0x0E},
-	{0x4B, 0x00}, {0x4C, 0x0F}, {0x4D, 0x20}, {0x4E, 0x40},
-	{0x4F, 0x60}, {0x50, 0xA0}, {0x51, 0xC0}, {0x52, 0xE0},
-	{0x53, 0xFF}, {0xFE, 0x0D}, {0x18, 0x08}, {0x42, 0x00},
-	{0x08, 0x41}, {0x46, 0x02}, {0x72, 0x09}, {0xFE, 0x0A},
-	{0x24, 0x17}, {0x04, 0x07}, {0x1A, 0x0C}, {0x0F, 0x44},
-	{0xFE, 0x04}, {0x00, 0x0C}, {0x05, 0x08}, {0x06, 0x08},
-	{0x08, 0x08}, {0x09, 0x08}, {0x0A, 0xE6}, {0x0B, 0x8C},
-	{0x1A, 0x12}, {0x1E, 0xE0}, {0x29, 0x93}, {0x2A, 0x93},
-	{0x2F, 0x02}, {0x31, 0x02}, {0x33, 0x05}, {0x37, 0x2D},
-	{0x38, 0x2D}, {0x3A, 0x1E}, {0x3B, 0x1E}, {0x3D, 0x27},
-	{0x3F, 0x80}, {0x40, 0x40}, {0x41, 0xE0}, {0x4F, 0x2F},
-	{0x50, 0x1E}, {0xFE, 0x06}, {0x00, 0xCC}, {0x05, 0x05},
-	{0x07, 0xA2}, {0x08, 0xCC}, {0x0D, 0x03}, {0x0F, 0xA2},
-	{0x32, 0xCC}, {0x37, 0x05}, {0x39, 0x83}, {0x3A, 0xCC},
-	{0x41, 0x04}, {0x43, 0x83}, {0x44, 0xCC}, {0x49, 0x05},
-	{0x4B, 0xA2}, {0x4C, 0xCC}, {0x51, 0x03}, {0x53, 0xA2},
-	{0x75, 0xCC}, {0x7A, 0x03}, {0x7C, 0x83}, {0x7D, 0xCC},
-	{0x82, 0x02}, {0x84, 0x83}, {0x85, 0xEC}, {0x86, 0x0F},
-	{0x87, 0xFF}, {0x88, 0x00}, {0x8A, 0x02}, {0x8C, 0xA2},
-	{0x8D, 0xEA}, {0x8E, 0x01}, {0x8F, 0xE8}, {0xFE, 0x06},
-	{0x90, 0x0A}, {0x92, 0x06}, {0x93, 0xA0}, {0x94, 0xA8},
-	{0x95, 0xEC}, {0x96, 0x0F}, {0x97, 0xFF}, {0x98, 0x00},
-	{0x9A, 0x02}, {0x9C, 0xA2}, {0xAC, 0x04}, {0xFE, 0x06},
-	{0xB1, 0x12}, {0xB2, 0x17}, {0xB3, 0x17}, {0xB4, 0x17},
-	{0xB5, 0x17}, {0xB6, 0x11}, {0xB7, 0x08}, {0xB8, 0x09},
-	{0xB9, 0x06}, {0xBA, 0x07}, {0xBB, 0x17}, {0xBC, 0x17},
-	{0xBD, 0x17}, {0xBE, 0x17}, {0xBF, 0x17}, {0xC0, 0x17},
-	{0xC1, 0x17}, {0xC2, 0x17}, {0xC3, 0x17}, {0xC4, 0x0F},
-	{0xC5, 0x0E}, {0xC6, 0x00}, {0xC7, 0x01}, {0xC8, 0x10},
-	{0xFE, 0x06}, {0x95, 0xEC}, {0x8D, 0xEE}, {0x44, 0xEC},
-	{0x4C, 0xEC}, {0x32, 0xEC}, {0x3A, 0xEC}, {0x7D, 0xEC},
-	{0x75, 0xEC}, {0x00, 0xEC}, {0x08, 0xEC}, {0x85, 0xEC},
-	{0xA6, 0x21}, {0xA7, 0x05}, {0xA9, 0x06}, {0x82, 0x06},
-	{0x41, 0x06}, {0x7A, 0x07}, {0x37, 0x07}, {0x05, 0x06},
-	{0x49, 0x06}, {0x0D, 0x04}, {0x51, 0x04},
-};
-
 static const u32 truly_bus_formats[] = {
 	MEDIA_BUS_FMT_RGB888_1X24,
 	MEDIA_BUS_FMT_RGB666_1X18,
@@ -126,43 +87,9 @@ struct truly_platform_data {
 	int (*enable)(struct truly_panel *panel);
 };
 
-//static const struct drm_display_mode default_mode = {
-//	.clock = 121000,
-//	.hdisplay = 1080,
-//	.hsync_start = 1080 + 20,
-//	.hsync_end = 1080 + 20 + 2,
-//	.htotal = 1080 + 20 + 2 + 34,
-//	.vdisplay = 1920,
-//	.vsync_start = 1920 + 10,
-//	.vsync_end = 1920 + 10 + 2,
-//	.vtotal = 1920 + 10 + 2 + 4,
-//	.width_mm = 68,
-//	.height_mm = 121,
-//	.flags = DRM_MODE_FLAG_NHSYNC |
-//		 DRM_MODE_FLAG_NVSYNC,
-//};
-//static struct fb_videomode truly_lcd_modedb[] = {
-//	{
-//	 "KD035HVTIA067", 	/* name (optional) */
-//	 60, 			/* refresh (optional) */
-//	 320, 			/*xres;*/
-//	 480, 			/*yres;*/
-//	 KHZ2PICOS(12500), 		/*pixclock;*/
-//	 3, 			/*left_margin;*/
-//	 3, 			/*right_margin;*/
-//	 2, 			/*upper_margin;*/
-//	 2, 			/*lower_margin;*/
-//	 3, 			/*hsync_len;*/
-//	 2, 			/*vsync_len;*/
-//	 FB_SYNC_OE_LOW_ACT, /*sync;*/
-//	 FB_VMODE_NONINTERLACED, /*vmode;*/
-//	 0, 			/*flag;*/
-//	},
-//};
-
 static const struct drm_display_mode default_mode = {
 	.name = "KD035HVTIA067", 	/* name (optional) */
-	.clock = PICOS2KHZ(12500),
+	.clock = 12500,
 	.hdisplay = 320,
 	.hsync_start = 320 + 3,
 	.hsync_end = 320 + 3 + 3,
@@ -229,6 +156,36 @@ static int rad_panel_push_cmd_list(struct mipi_dsi_device *dsi,
 	return ret;
 };
 
+//static int rad_dsi_dcs_read(struct device *dev, const u8 cmd, u8 *data, int len)
+//{
+//	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
+//	int ret;
+//
+//	ret = mipi_dsi_dcs_read(dsi, cmd, data, len);
+//	if (ret < 0) {
+//		dev_err(dev, "could not read DCS CMD %02x\n", cmd);
+//		return ret;
+//	}
+//
+//	dev_info(dev, "DSI read CMD %02x = %02x\n", cmd, *data);
+//
+//	return 0;
+//}
+
+static int rad_dsi_dcs_read(struct device *dev, u8 cmd, void *data, size_t len)
+{
+	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
+	int ret;
+
+
+	ret = mipi_dsi_dcs_read(dsi, cmd, data, len);
+	if (ret < 0) {
+		dev_err(dev, "error %d reading dcs seq(%#x)\n", ret, cmd);
+	}
+
+	return ret;
+}
+
 /*
  *
  */
@@ -243,22 +200,17 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 
 	dev_info(dev, "MIPI DSI KD035HVTIA067 LCD setup.\n");
 
-//	err = mipi_dsi_dcs_soft_reset(dsi);
-//	CHECK_RETCODE(err);
-
 	buf[0] = MIPI_DSI_MAX_RET_PACK_SIZE;
 	err = mipi_dsi_generic_write(dsi, buf, 0);
 	dev_dbg(dev, "MIPI_DSI_MAX_RET_PACK_SIZE...\n");
 	CHECK_RETCODE(err);
 
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	err = mipi_dsi_dcs_cmd(panel, MIPI_DCS_EXIT_SLEEP_MODE, NULL, 0);
 	dev_dbg(dev, "MIPI DSI COM43H Sleep out...\n");
 	CHECK_RETCODE(err);
 	msleep(200);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	err = mipi_dsi_dcs_cmd(panel, MIPI_DCS_SET_DISPLAY_OFF, NULL, 0);
 	dev_dbg(dev, "MIPI DSI Display off...\n");
 	CHECK_RETCODE(err);
@@ -273,7 +225,12 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 //	dev_info(dev, "MIPI DSI LCD ID:0x%x MODEL:0x%x.\n", id, model);
 
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
+//	err = rad_dsi_dcs_read(dev, 0xD3, (u8 *)buf, 4);
+//	CHECK_RETCODE(err);
+//	model = (read_buf[0] & 0xFF00) >> 8;
+//	id    = (read_buf[0] & 0xFF0000) >> 16;
+//	dev_info(dev, "MIPI DSI LCD ID:0x%x MODEL:0x%x.\n", id, model);
+
 	/* Positive Gamma Control */
 	buf[0] = 0x0E0400E0;
 	buf[1] = 0x400A1708;
@@ -283,7 +240,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Positive Gamma Control...\n");
 	CHECK_RETCODE(err);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Negative Gamma Control */
 	buf[0] = 0x1F1B00E1;
 	buf[1] = 0x32051002;
@@ -299,7 +255,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	CHECK_RETCODE(err);
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Power Control 1...\n");
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Power Control 2 */
 	buf[0] = 0x41c1;
 	err = mipi_dsi_generic_write(dsi, buf, 2);
@@ -307,14 +262,12 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 POWER CONTROL MODE 2...\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* VCOM Control */
 	buf[0] = 0x801E00C5;
 	err = mipi_dsi_generic_write(dsi, buf, 4);
 	CHECK_RETCODE(err);
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 VCOM Control...OK.\n");
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Memory Access control */
 	buf[0] = 0x4836;
 	err = mipi_dsi_generic_write(dsi, buf, 2);
@@ -322,7 +275,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Memory Access control...\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Interface Mode Control 18BIT RGB666 */
 	buf[0] = 0x553A; //0x773a;
 	err = mipi_dsi_generic_write(dsi, buf, 2);
@@ -330,7 +282,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Interface pixel format...\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 //	/* Frame Rate Control Frame rate 60HZ */
 	buf[0] = 0x11A0B1;
 //	err = mipi_dsi_generic_write(dsi, buf, 3);
@@ -340,7 +291,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	msleep(5);
 
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Display Inversion Control */
 	buf[0] = 0x02B4;
 	err = mipi_dsi_generic_write(dsi, buf, 2);
@@ -348,7 +298,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Display Inversion Control...\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Set Image Function */
 	buf[0] = 0x00E9;
 	err = mipi_dsi_generic_write(dsi, buf, 2);
@@ -356,7 +305,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Set Image Function...\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Adjust Control 3 */
 	buf[0] = 0x2C51A9F7;
 	buf[1] = 0x82;
@@ -365,7 +313,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	CHECK_RETCODE(err);
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Adjust Control 3...\n");
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/**********set rgb interface mode******************/
 //	write_command(0xB6);
 //	write_data(0x02); //30 set rgb
@@ -377,7 +324,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Display Function Control...OK.\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Column Address Set */
 	buf[0] = 0x0100002A;
 	buf[1] = 0x3F;
@@ -386,7 +332,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	CHECK_RETCODE(err);
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Column Address Set...OK.\n");
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	/* Page Address Set */
 	buf[0] = 0x0100002B;
 	buf[1] = 0xDF;
@@ -395,7 +340,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	CHECK_RETCODE(err);
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 Page Address Set...OK.\n");
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	buf[1] = 0;
 	buf[0] = MIPI_DCS_WRITE_MEMORY_START;
 	err = mipi_dsi_generic_write(dsi, buf, 0);
@@ -403,7 +347,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI Display WRITE_MEMORY_START..OK.\n");
 	msleep(5);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	msleep(20);
 	buf[1] = 0;
 	buf[0] = MIPI_DCS_EXIT_SLEEP_MODE;
@@ -412,7 +355,6 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	dev_dbg(dev, "MIPI DSI KD035HVTIA067 COM43H Sleep out...OK.\n");
 	msleep(10);
 
-	dev_info(dev, "%s : %d\n", __FUNCTION__, __LINE__);
 	buf[1] = 0;
 	buf[0] = MIPI_DCS_SET_DISPLAY_ON;
 	err = mipi_dsi_generic_write(dsi, buf, 0);
@@ -438,7 +380,7 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 
 	return err;
 }
-
+#if 0
 static int mipid_kd035hvtia067_lcd_get_model(struct truly_panel *panel)
 {
 	struct mipi_dsi_device *dsi = panel->dsi;
@@ -606,7 +548,7 @@ static int mipid_kd035hvtia067_lcd_get_model(struct truly_panel *panel)
 	return err;
 
 }
-
+#endif
 
 
 static inline struct truly_panel *to_truly_panel(struct drm_panel *panel)
@@ -614,6 +556,7 @@ static inline struct truly_panel *to_truly_panel(struct drm_panel *panel)
 	return container_of(panel, struct truly_panel, panel);
 }
 
+#if 0
 static int truly_panel_push_cmd_list(struct mipi_dsi_device *dsi,
 				   struct cmd_set_entry const *cmd_set,
 				   size_t count)
@@ -632,6 +575,7 @@ static int truly_panel_push_cmd_list(struct mipi_dsi_device *dsi,
 
 	return ret;
 };
+#endif
 
 static int color_format_from_dsi_format(enum mipi_dsi_pixel_format format)
 {
@@ -742,13 +686,14 @@ static int kd035_enable(struct truly_panel *panel)
 	if (ret < 0)
 		goto fail;
 
-#if 0
+	dev_err(dev, "%s %d\n", __FUNCTION__, __LINE__);
 	/* Set DSI mode */
 	ret = mipi_dsi_generic_write(dsi, (u8[]){ 0xC2, 0x0B }, 2);
 	if (ret < 0) {
 		dev_err(dev, "Failed to set DSI mode (%d)\n", ret);
 		goto fail;
 	}
+
 	dev_err(dev, "%s %d\n", __FUNCTION__, __LINE__);
 	/* Set tear ON */
 	ret = mipi_dsi_dcs_set_tear_on(dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
@@ -770,7 +715,6 @@ static int kd035_enable(struct truly_panel *panel)
 		goto fail;
 	}
 
-#endif
 	/* Exit sleep mode */
 	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
 	if (ret < 0) {

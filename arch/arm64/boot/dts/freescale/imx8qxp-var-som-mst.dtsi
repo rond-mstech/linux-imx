@@ -5,12 +5,12 @@
  */
 
 #include "imx8qxp-var-som.dtsi"
-
 / {
 	chosen {
 		stdout-path = &lpuart3;
 	};
 
+#ifndef MULTI
 	backlight: backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm_mipi_lvds0 0 100000 0>;
@@ -29,6 +29,17 @@
 		default-brightness-level = <80>;
 		status = "okay";
 	};
+#else
+	backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm_mipi_lvds0 0 50000>;
+
+		brightness-levels = <0 4 8 16 32 64 128 248>;
+		default-brightness-level = <7>;
+		status = "okay";
+	};
+
+#endif
 
 	gpio-keys {
 		compatible = "gpio-keys";
@@ -45,7 +56,7 @@
 		compatible = "gpio-poweroff";
 		gpios = <&lsio_gpio1 4 GPIO_ACTIVE_LOW>;
 	};
-
+#ifndef MULTI
 	lvds_panel {
 		compatible = "sgd,gktw70sdae4se", "panel-lvds";
 		backlight = <&backlight>;
@@ -77,8 +88,8 @@
 			};
 		};
 	};
-	
-	
+#endif
+
 
 	regulators {
 		compatible = "simple-bus";
@@ -441,6 +452,7 @@
 		>;
 	};
 
+#if 0
 	pinctrl_lpspi2: lpspi2grp {
 		fsl,pins = <
 			IMX8QXP_SPI2_SCK_ADMA_SPI2_SCK				0x0600004c
@@ -449,7 +461,7 @@
 			IMX8QXP_SPI2_CS0_LSIO_GPIO1_IO00			0x00000021
 		>;
 	};
-
+#endif
 	pinctrl_mipi_csi0: mipicsi0grp {
 		fsl,pins = <
 			IMX8QXP_QSPI0B_SS1_B_LSIO_GPIO3_IO24			0xC0000041
@@ -479,7 +491,7 @@
 
 	pinctrl_pwm_mipi_lvds0: mipi_lvds0_pwm_grp {
 		fsl,pins = <
-//mstech backlight
+//mstech backlight Same on Multiscan & Threatscan
 			IMX8QXP_MIPI_DSI0_GPIO0_00_MIPI_DSI0_PWM0_OUT		0x00000020
 		>;
 	};
@@ -554,16 +566,21 @@
 };
 
 &ldb1_phy {
+#ifdef MULTI
+	status = "disabled";
+#else
 	status = "okay";
+#endif
 };
-
 &ldb1 {
 	status = "okay";
 	lvds-channel@0 {
 		fsl,data-mapping = "spwg";
 		fsl,data-width = <24>;
+#ifdef MULTI
+		status = "disabled";
+#else
 		status = "okay";
-
 		port@1 {
 			reg = <1>;
 
@@ -571,9 +588,10 @@
 				remote-endpoint = <&panel_in>;
 			};
 		};
+#endif
+
 	};
 };
-
 &ldb2_phy {
 	status = "disabled";
 };
@@ -582,13 +600,14 @@
 	status = "disabled";
 };
 
+#if 0
 &lpspi2 {
 	#address-cells = <1>;
 	#size-cells = <0>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpspi2>;
 	cs-gpios = <&lsio_gpio1 0 GPIO_ACTIVE_LOW>;
-	status = "okay";
+	status = "disabled";
 
 	spidev@0 {
 		compatible = "var,spidev";
@@ -597,7 +616,7 @@
 		status = "okay";
 	};
 };
-
+#endif
 /*
 gpio-poweroff {
 	compatible = "gpio-poweroff";
@@ -668,6 +687,69 @@ gpio-poweroff {
 	};
 };
 */
+
+#ifdef MULTI
+&ldb1_phy {
+	status = "disabled";
+};
+
+&ldb1 {
+	status = "disabled";
+};
+
+&ldb2_phy {
+	status = "disabled";
+};
+
+&ldb2 {
+	status = "disabled";
+};
+
+&mipi0_dphy {
+	status = "okay";
+};
+
+&dpu1 {
+	status = "okay";
+};
+
+&mipi0_dsi_host {
+	status = "okay";
+	fsl,clock-drop-level = <2>;
+	
+	panel@0 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		compatible = "truly,kd035"; //"raydium,rm67192";
+		reg = <0>;
+		mipi_reset-gpios  = <&lsio_gpio0 19 GPIO_ACTIVE_HIGH>;
+
+		dsi-lanes = <1>;
+		video-mode = <2>;
+		width-mm = <49>;
+		height-mm = <73>;
+
+		port@0 {
+			reg = <0>;
+			panel0_in: endpoint {
+				remote-endpoint = <&mipi0_panel_out>;
+			};
+		};
+	};
+
+	ports {
+		/delete-node/ port@1;
+
+		port@1 {
+			reg = <1>;
+			mipi0_panel_out: endpoint {
+				remote-endpoint = <&panel0_in>;
+			};
+		};
+	};
+};
+#endif
 
 &mipi_csi_0 {
 	#address-cells = <1>;

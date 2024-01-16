@@ -136,6 +136,74 @@ static int mipi_dsi_dcs_cmd(struct truly_panel *panel,
 
 	return err;
 }
+static void kd035_set_maximum_return_packet_size(struct truly_panel *panel, u16 size)
+{
+	struct mipi_dsi_device *dsi = panel->dsi;
+	struct device *dev = &dsi->dev;
+	int ret;
+
+	ret = mipi_dsi_set_maximum_return_packet_size(dsi, size);
+	if (ret < 0) {
+		dev_err(dev, "error %d setting maximum return packet size to %d\n", ret, size);
+	}
+}
+
+static int kd035_dcs_read(struct truly_panel *panel, u8 cmd, void *data, size_t len)
+{
+	struct mipi_dsi_device *dsi = panel->dsi;
+	struct device *dev = &dsi->dev;
+
+	int ret;
+
+	ret = mipi_dsi_dcs_read(dsi, cmd, data, len);
+	if (ret < 0) {
+		dev_err(dev, "error %d reading dcs seq(%#x)\n", ret, cmd);
+	}
+
+	return ret;
+}
+static void kd035_read_mtp_id(struct truly_panel *panel)
+{
+	u8 id[3];
+	int ret;
+	struct mipi_dsi_device *dsi = panel->dsi;
+	struct device *dev = &dsi->dev;
+
+	kd035_set_maximum_return_packet_size(panel, 3);
+
+	ret = kd035_dcs_read(panel, 0x04, id, ARRAY_SIZE(id));
+	if (ret < 0 || ret < ARRAY_SIZE(id) || id[0] == 0x00) {
+		dev_err(dev, "read id failed\n");
+		return;
+	}
+
+	dev_info(dev, "ID: 0x%2x, 0x%2x, 0x%2x 0x%2x\n", id[0], id[1], id[2], id[3]);
+}
+
+
+static int kd035_read_mtp_brightness(struct truly_panel *panel)
+{
+	u8 brightness = 0;
+	int ret;
+	u8 buf[DSI_CMD_BUF_MAXSIZE];
+	struct mipi_dsi_device *dsi = panel->dsi;
+	struct device *dev = &dsi->dev;
+
+	kd035_set_maximum_return_packet_size(panel, 1);
+
+//	ret = kd035_dcs_read(panel, MIPI_DCS_GET_DISPLAY_BRIGHTNESS, &brightness, sizeof(brightness));
+	buf[0] = MIPI_DCS_GET_DISPLAY_BRIGHTNESS;
+	ret =  mipi_dsi_generic_read(dsi, &buf[0], 1,  &brightness, 1);
+
+	if (ret < 0 || brightness == 0x00) {
+		dev_err(dev, "read brightness failed %d\n", ret);
+		return ret;
+	}
+
+	dev_info(dev, "brightness: 0x%x\n", brightness);
+
+	return brightness;
+}
 
 /*
  *
@@ -167,6 +235,7 @@ static int mipid_kd035hvtia067_lcd_setup(struct truly_panel *panel)
 	CHECK_RETCODE(err);
 	msleep(120);
 
+	kd035_set_maximum_return_packet_size(panel, 4);
 	buf[0] = 0xD3;
 	err =  mipi_dsi_generic_read(dsi, &buf[0], 2,  read_buf, 4);
 	if (err >=0 ){
@@ -659,7 +728,7 @@ static int kd035_enable(struct truly_panel *panel)
 		goto fail;
 	}
 
-
+	kd035_read_mtp_id(panel);
 
 	backlight_enable(panel->backlight);
 
@@ -745,17 +814,24 @@ static int truly_bl_get_brightness(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
 	struct truly_panel *rad = mipi_dsi_get_drvdata(dsi);
+	struct device *dev = &dsi->dev;
 	u16 brightness;
 	int ret;
 
 	if (!rad->prepared)
 		return 0;
+	kd035_read_mtp_brightness(rad);
 
 	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
 
+	kd035_set_maximum_return_packet_size(rad, 2);
+
 	ret = mipi_dsi_dcs_get_display_brightness(dsi, &brightness);
-	if (ret < 0)
+	if (ret < 0){
+		dev_err(dev, "Failed to get brightness%d\n", ret);
 		return ret;
+	}
+	printk("%s:%d brightness=0x%x", __FUNCTION__, __LINE__, brightness);
 
 	bl->props.brightness = brightness;
 
@@ -766,6 +842,7 @@ static int truly_bl_update_status(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
 	struct truly_panel *rad = mipi_dsi_get_drvdata(dsi);
+	struct device *dev = &dsi->dev;
 	int ret = 0;
 
 	if (!rad->prepared)
@@ -773,10 +850,14 @@ static int truly_bl_update_status(struct backlight_device *bl)
 
 	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
 
-	ret = mipi_dsi_dcs_set_display_brightness(dsi, bl->props.brightness);
-	if (ret < 0)
-		return ret;
+	printk("%s:%d brightness=0x%x", __FUNCTION__, __LINE__, bl->props.brightness);
+//	ret = mipi_dsi_dcs_set_display_brightness(dsi, bl->props.brightness);
+	ret = mipi_dsi_generic_write(dsi, (u8[]){ MIPI_DCS_SET_DISPLAY_BRIGHTNESS, (u8)bl->props.brightness }, 2);
 
+	if (ret < 0){
+		dev_err(dev, "Failed to update brightness 0x%x %d\n", bl->props.brightness, ret);
+		return ret;
+	}
 	return 0;
 }
 
@@ -793,6 +874,8 @@ static const struct drm_panel_funcs truly_panel_funcs = {
 	.get_modes = truly_panel_get_modes,
 };
 
+#if 0
+//In MS-TECH design we don't use regulators
 static const char * const truly_supply_names[] = {
 	"v3p3",
 	"v1p8",
@@ -814,6 +897,7 @@ static int truly_init_regulators(struct truly_panel *rad)
 
 	return devm_regulator_bulk_get(dev, rad->num_supplies, rad->supplies);
 };
+#endif
 
 static const struct truly_platform_data truly_kd035 = {
 	.enable = &kd035_enable,
@@ -847,9 +931,10 @@ static int truly_panel_probe(struct mipi_dsi_device *dsi)
 	panel->dsi = dsi;
 	panel->pdata = of_id->data;
 
-	dsi->format = MIPI_DSI_FMT_RGB565; //MIPI_DSI_FMT_RGB666_PACKED;
+	dsi->format = MIPI_DSI_FMT_RGB666_PACKED; //MIPI_DSI_FMT_RGB565;
 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO_HSE |
 			  MIPI_DSI_MODE_VIDEO |
+			  MIPI_DSI_MODE_LPM |
 			  MIPI_DSI_MODE_EOT_PACKET;
 
 	ret = of_property_read_u32(np, "video-mode", &video_mode);
@@ -888,9 +973,9 @@ static int truly_panel_probe(struct mipi_dsi_device *dsi)
 	}
 
 	memset(&bl_props, 0, sizeof(bl_props));
-	bl_props.type = BACKLIGHT_RAW; //BACKLIGHT_PLATFORM
-	bl_props.brightness = 7;
-	bl_props.max_brightness = 7;
+	bl_props.type = BACKLIGHT_RAW;
+	bl_props.brightness = 200;
+	bl_props.max_brightness = 255;
 
 	panel->backlight = devm_backlight_device_register(dev, dev_name(dev),
 							  dev, dsi, &truly_bl_ops,
@@ -901,10 +986,11 @@ static int truly_panel_probe(struct mipi_dsi_device *dsi)
 		return ret;
 	}
 
+#if 0
 	ret = truly_init_regulators(panel);
 	if (ret)
 		return ret;
-
+#endif
 	drm_panel_init(&panel->panel, dev, &truly_panel_funcs,
 		       DRM_MODE_CONNECTOR_DSI);
 	dev_set_drvdata(dev, panel);

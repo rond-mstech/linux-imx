@@ -29,14 +29,16 @@
 		default-brightness-level = <80>;
 		status = "okay";
 	};
-#else
+#endif
+#ifdef MULTI
 	backlight: backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm_mipi_lvds0 0 800>;
 
-		brightness-levels = <0 4 8 16 32 64 128 248>;
+		brightness-levels = <0 255>;
+		num-interpolated-steps = <254>;
 
-		default-brightness-level = <7>;
+		default-brightness-level = <254>;
 		status = "okay";
 	};
 

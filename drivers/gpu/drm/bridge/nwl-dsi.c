@@ -1449,6 +1449,7 @@ static const struct drm_encoder_funcs nwl_dsi_encoder_funcs = {
 	.destroy = nwl_dsi_encoder_destroy,
 };
 
+static int first_time = 1;
 static int nwl_dsi_parse_dt(struct nwl_dsi *dsi)
 {
 	struct platform_device *pdev = to_platform_device(dsi->dev);
@@ -1595,8 +1596,10 @@ static int nwl_dsi_parse_dt(struct nwl_dsi *dsi)
 
 	dsi->irq = platform_get_irq(pdev, 0);
 	if (dsi->irq < 0) {
-		DRM_DEV_ERROR(dsi->dev, "Failed to get device IRQ: %d\n",
-			      dsi->irq);
+		if (first_time)
+			first_time = 0;
+		else
+			DRM_DEV_ERROR(dsi->dev, "Failed to get device IRQ: %d\n", dsi->irq);
 		return dsi->irq;
 	}
 

@@ -226,6 +226,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-mst-sd.dtb imx8qxp-var-som-mst-wifi.dt
 			  imx8qxp-var-som-mst-sd-m4.dtb imx8qxp-var-som-mst-wifi-m4.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-mstmulti-sd.dtb imx8qxp-var-som-mstmulti-wifi.dtb \
 			  imx8qxp-var-som-mstmulti-sd-m4.dtb imx8qxp-var-som-mstmulti-wifi-m4.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-mstmulti5-sd.dtb imx8qxp-var-som-mstmulti5-wifi.dtb \
+			  imx8qxp-var-som-mstmulti5-sd-m4.dtb imx8qxp-var-som-mstmulti5-wifi-m4.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qm-mek-sof-cs42888.dtb imx8qm-mek-sof-wm8960.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8dxl-evk-root.dtb imx8dxl-evk-inmate.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb imx8ulp-evk-rk055hdmipi4m.dtb \

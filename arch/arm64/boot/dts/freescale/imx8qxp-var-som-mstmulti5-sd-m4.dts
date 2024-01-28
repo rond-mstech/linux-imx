@@ -3,19 +3,13 @@
  * Copyright 2019-2022 Variscite Ltd.
  */
 #define MSTECH
-#ifndef MULTI
-#ifndef MULTI5
-#define THREATSCAN
-#endif
-#endif
-
-
+#define MULTI5
 
 #include "imx8qxp-var-som-mst-sd.dts"
 #include "imx8qxp-var-som-mst-m4.dtsi"
 
 / {
-	model = "Variscite VAR-SOM-MX8X on Threatscan Board SD M4";
+	model = "Variscite VAR-SOM-MX8X on Multiscan Board SD M4";
 };
 
 

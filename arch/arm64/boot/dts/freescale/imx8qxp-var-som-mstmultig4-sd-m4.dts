@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2019-2022 Variscite Ltd.
+ */
+#define MSTECH
+#define MULTI
+#define MULTIG4
+
+#include "imx8qxp-var-som-mst-sd.dts"
+#include "imx8qxp-var-som-mst-m4.dtsi"
+
+/ {
+	model = "Variscite VAR-SOM-MX8X on Multiscan Board SD M4";
+};
+
+

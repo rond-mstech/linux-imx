@@ -842,24 +842,46 @@ gpio-poweroff {
 	status = "okay";
 	fsl,clock-drop-level = <2>;
 	
+#ifdef MULTIG4
+    	// fsl,dsi-lanes = <2>;
+#endif
+
 	panel@0 {
 		#address-cells = <1>;
 		#size-cells = <0>;
-
+#ifdef MULTIG4
+		compatible = "mst,h050a11fwist5c20";
+		//compatible = "techstar,ts8550b";
+		//compatible = "truly,kd035"; //"raydium,rm67192";
+#else		
 		compatible = "truly,kd035"; //"raydium,rm67192";
+#endif		
 		reg = <0>;
 		mipi_reset-gpios  = <&lsio_gpio0 19 GPIO_ACTIVE_HIGH>;
-
+#ifdef MULTIG4
+		/* 2 lanes required by the new TFT-H050A */
+		dsi-lanes = <2>;
+#else
 		dsi-lanes = <1>;
+#endif		
 		video-mode = <2>;
+#ifdef MULTIG4		
+		/* Resolution from datasheet: 480x854 */
+		/* Physical size: please adjust to exact mm from your datasheet if known */
+        	width-mm = <62>;   /* Active area width 61.632 mm */
+        	height-mm = <110>; /* Active area height 109.654 mm */
+#else        
 		width-mm = <49>;
 		height-mm = <73>;
-
+#endif
 
 		port@0 {
 			reg = <0>;
 			panel0_in: endpoint {
 				remote-endpoint = <&mipi0_panel_out>;
+#ifdef MULTIG4				
+				data-lanes = <0 1>;
+#endif				
 			};
 		};
 	};
@@ -871,6 +893,9 @@ gpio-poweroff {
 			reg = <1>;
 			mipi0_panel_out: endpoint {
 				remote-endpoint = <&panel0_in>;
+#ifdef MULTIG4					
+				data-lanes = <0 1>;     /* ADDED */
+#endif				
 			};
 		};
 	};

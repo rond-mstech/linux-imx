@@ -346,6 +346,20 @@
 	status = "okay";
 
 	/* Capacitive touch controller */
+	
+#ifdef MULTIG4
+	goodix@5d {
+		compatible = "goodix,gt911";
+		reg = <0x5d>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_captouch>;
+		interrupt-parent = <&lsio_gpio0>;
+		interrupts = <5 0>;
+		reset-gpios = <&lsio_gpio0 26 GPIO_ACTIVE_LOW>;
+		touchscreen-size-x = <480>;
+		touchscreen-size-y = <854>;
+	};
+#else
 	ft5x06_ts: ft5x06_ts@38 {
 #ifdef MULTI
 		status = "okay";
@@ -363,7 +377,7 @@
 		touchscreen-inverted-x;
 		touchscreen-inverted-y;
 	};
-	
+#endif	
 #ifdef MULTI5
 	goodix@5d {
 		compatible = "goodix,gt911";

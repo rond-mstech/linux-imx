@@ -1,0 +1,149 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2019-2022 Variscite Ltd.
+ */
+
+#define MSTECH
+
+#include "imx8qxp-var-som-mst.dtsi"
+#include "imx8qxp-var-som-mst-m4.dtsi"
+
+/ {
+	model = "Variscite VAR-SOM-MX8X on MST Board Headless SD M4";
+};
+
+&iomuxc {
+	pinctrl-0 = <&pinctrl_hog>, <&pinctrl_status_leds>;
+
+	pinctrl_status_leds: statusledsgrp {
+		fsl,pins = <
+			IMX8QXP_ESAI0_SCKT_LSIO_GPIO0_IO03			0xC0000041
+			IMX8QXP_ESAI0_TX0_LSIO_GPIO0_IO04			0xC0000041
+		>;
+	};
+
+	pinctrl_usdhc2_vsel: usdhc2vselgrp {
+		fsl,pins = <
+			IMX8QXP_USDHC1_VSELECT_CONN_USDHC1_VSELECT	0x00000021
+		>;
+	};
+};
+
+/* Header */
+&lpuart0 {
+	pinctrl-0 = <&pinctrl_lpuart0>;
+	status = "okay";
+};
+
+/* SD */
+&usdhc2 {
+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>, <&pinctrl_usdhc2_vsel>;
+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>, <&pinctrl_usdhc2_vsel>;
+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>, <&pinctrl_usdhc2_vsel>;
+	bus-width = <4>;
+	cd-gpios = <&lsio_gpio4 22 GPIO_ACTIVE_LOW>;
+	max-frequency = <50000000>;
+	no-1-8-v;
+	status = "okay";
+};
+
+&dc0_pc {
+	status = "disabled";
+};
+
+&dc0_prg1 {
+	status = "disabled";
+};
+
+&dc0_prg2 {
+	status = "disabled";
+};
+
+&dc0_prg3 {
+	status = "disabled";
+};
+
+&dc0_prg4 {
+	status = "disabled";
+};
+
+&dc0_prg5 {
+	status = "disabled";
+};
+
+&dc0_prg6 {
+	status = "disabled";
+};
+
+&dc0_prg7 {
+	status = "disabled";
+};
+
+&dc0_prg8 {
+	status = "disabled";
+};
+
+&dc0_prg9 {
+	status = "disabled";
+};
+
+&dc0_dpr1_channel1 {
+	status = "disabled";
+};
+
+&dc0_dpr1_channel2 {
+	status = "disabled";
+};
+
+&dc0_dpr1_channel3 {
+	status = "disabled";
+};
+
+&dc0_dpr2_channel1 {
+	status = "disabled";
+};
+
+&dc0_dpr2_channel2 {
+	status = "disabled";
+};
+
+&dc0_dpr2_channel3 {
+	status = "disabled";
+};
+
+&dpu1 {
+	status = "disabled";
+};
+
+&ldb1_phy {
+	status = "disabled";
+};
+
+&ldb1 {
+	status = "disabled";
+};
+
+&ldb2_phy {
+	status = "disabled";
+};
+
+&ldb2 {
+	status = "disabled";
+};
+
+&mipi0_dphy {
+	status = "disabled";
+};
+
+&mipi0_dsi_host {
+	status = "disabled";
+};
+
+&pwm_mipi_lvds0 {
+	status = "disabled";
+};
+
+&pwm_mipi_lvds1 {
+	status = "disabled";
+};

@@ -223,7 +223,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-dom0.dtb imx8qxp-mek-root.dtb \
 dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-symphony-sd.dtb imx8qxp-var-som-symphony-wifi.dtb \
 			  imx8qxp-var-som-symphony-sd-m4.dtb imx8qxp-var-som-symphony-wifi-m4.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-mst-sd.dtb imx8qxp-var-som-mst-wifi.dtb \
-			  imx8qxp-var-som-mst-sd-m4.dtb imx8qxp-var-som-mst-wifi-m4.dtb
+			  imx8qxp-var-som-mst-sd-m4.dtb imx8qxp-var-som-mst-wifi-m4.dtb \
+			  imx8qxp-var-som-mst-headless-m4.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-mstmulti-sd.dtb imx8qxp-var-som-mstmulti-wifi.dtb \
 			  imx8qxp-var-som-mstmulti-sd-m4.dtb imx8qxp-var-som-mstmulti-wifi-m4.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8qxp-var-som-mstmulti5-sd.dtb imx8qxp-var-som-mstmulti5-wifi.dtb \

@@ -27,11 +27,37 @@
 			IMX8QXP_USDHC1_VSELECT_CONN_USDHC1_VSELECT	0x00000021
 		>;
 	};
+
+	pinctrl_lpuart0_external: lpuart0externalgrp {
+		fsl,pins = <
+			IMX8QXP_UART0_RX_ADMA_UART0_RX				0x06000020
+			IMX8QXP_UART0_TX_ADMA_UART0_TX				0x06000020
+		>;
+	};
+
+	pinctrl_bt_uart0_disable: btuart0disablegrp {
+		fsl,pins = <
+			IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29		0x06000021
+		>;
+	};
+};
+
+&lsio_gpio1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_bt_uart0_disable>;
+
+	bt_uart0_disable_hog {
+		gpio-hog;
+		gpios = <29 0>;
+		output-high;
+		line-name = "bt_uart0_disable";
+	};
 };
 
 /* Header */
 &lpuart0 {
-	pinctrl-0 = <&pinctrl_lpuart0>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpuart0_external>;
 	status = "okay";
 };
 
